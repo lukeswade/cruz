@@ -2,7 +2,7 @@
   "name": "Cruz Coaching Portal",
   "short_name": "Cruz Portal",
   "description": "Manage your player's schedule and attendance.",
-  "start_url": "/portal.html",
+  "start_url": "/portal",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
