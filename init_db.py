@@ -42,14 +42,16 @@ def init_db():
 
     # Seed Data
     cursor.execute("INSERT INTO parents (id, email, password) VALUES (1, 'parent@example.com', 'password123')")
+    cursor.execute("INSERT INTO parents (id, email, password) VALUES (2, 'luke@lukewade.net', 'lukewade')")
+    cursor.execute("INSERT INTO parents (id, email, password) VALUES (3, 'cruz@lukewade.net', 'cruz')")
+    cursor.execute("INSERT INTO parents (id, email, password) VALUES (4, 'lee@lukewade.net', 'lee')")
     
-    # Players (Now Parent 1 has TWO kids to test dropdown)
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (1, 1, 'Liam', 'Smith', 'LS', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (5, 1, 'Noah', 'Smith', 'NS', 'U13 Mastery Clinic')")
-    
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (2, NULL, 'Jackson', 'C', 'JC', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (3, NULL, 'Mateo', 'R', 'MR', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (4, NULL, 'Ethan', 'W', 'EW', 'U11-U12 Elite')")
+    # Players (Now linked to specific POC accounts)
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (1, 2, 'Liam', 'Smith', 'LS', 'U11-U12 Elite')")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (2, 2, 'Jackson', 'C', 'JC', 'U11-U12 Elite')")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (3, 3, 'Mateo', 'R', 'MR', 'U11-U12 Elite')")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (4, 4, 'Ethan', 'W', 'EW', 'U11-U12 Elite')")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (5, 3, 'Noah', 'Smith', 'NS', 'U13 Mastery Clinic')")
     
     # Sessions
     cursor.execute("INSERT INTO sessions (id, group_name, date, time_str) VALUES (101, 'U11-U12 Elite', '2026-04-20', 'Spirit Park • 5:00 PM - 6:00 PM')")
