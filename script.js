@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
+    const toggle = document.getElementById('mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    // Navbar scroll effect
     if (navbar) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -15,21 +18,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mobile menu toggle
-    const toggle = document.getElementById('mobile-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
     if (toggle && navLinks) {
         toggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-
-        // Close mobile menu when ANY link inside it is tapped
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
     }
+
+    // Smooth scroll + auto-close mobile menu — single unified handler
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                if (navLinks) {
+                    navLinks.classList.remove('active');
+                }
+                
+                // Scroll to target with navbar offset
+                const offset = navbar ? navbar.offsetHeight + 10 : 0;
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
+    });
 
     // Intersection Observer for Scroll Animations
     const observer = new IntersectionObserver((entries) => {
@@ -42,20 +57,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-up, .fade-left').forEach(el => observer.observe(el));
-
-    // Smooth scroll for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href === '#') return;
-            const target = document.querySelector(href);
-            if (target) {
-                e.preventDefault();
-                const offset = navbar ? navbar.offsetHeight : 0;
-                const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top, behavior: 'smooth' });
-            }
-        });
-    });
 
 });
