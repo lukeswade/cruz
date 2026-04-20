@@ -1,8 +1,11 @@
-const CACHE_NAME = 'cruz-portal-v2';
+const CACHE_NAME = 'cruz-portal-v3';
 const STATIC_ASSETS = [
-    '/portal.html',
+    '/',
+    '/portal',
     '/style.css',
     '/assets/icon.png',
+    '/assets/icon-192.png',
+    '/assets/icon-512.png',
     'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Alex+Brush&display=swap'
 ];
 
