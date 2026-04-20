@@ -45,8 +45,8 @@ body.dark-theme {
 
 .section-title {
     font-family: var(--font-display);
-    font-size: 3rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     
     letter-spacing: 1px;
     margin-bottom: 1rem;
@@ -64,7 +64,7 @@ body.dark-theme {
     display: inline-block;
     padding: 0.8rem 1.8rem;
     border-radius: 4px;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     transition: all 0.3s ease;
     
@@ -121,18 +121,21 @@ body.dark-theme {
     margin: 0 auto;
 }
 
-.brand {
-    font-family: var(--font-display);
-    font-size: 2.2rem;
-    font-weight: 800;
+.brand-cruz {
+    font-family: 'Alex Brush', cursive;
+    font-size: 2.6rem;
+    font-weight: 400;
     color: var(--text-primary);
-    text-decoration: none;
-    letter-spacing: 0px;
+    margin-right: 6px;
 }
 
-.brand .accent {
-    font-size: 1.6rem;
+.brand-coaching {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
     font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
 }
 
 .nav-links {
@@ -235,8 +238,8 @@ body.dark-theme {
 
 .display-title {
     font-family: var(--font-display);
-    font-size: 5rem;
-    font-weight: 600;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
     line-height: 1.1;
     margin-bottom: 1.5rem;
     
@@ -336,8 +339,8 @@ body.dark-theme {
     align-items: center;
     justify-content: center;
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.2rem;
+    font-weight: 500;
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
     color: var(--accent);
 }
@@ -350,8 +353,8 @@ body.dark-theme {
 
 .age-group {
     color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 500;
     margin-bottom: 1rem;
     
     letter-spacing: 1px;
@@ -584,7 +587,7 @@ body.dark-theme {
     width: 100%;
     height: 400px;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 30%;
 }
 .team-info {
     padding: 2rem;

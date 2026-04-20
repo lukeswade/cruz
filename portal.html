@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Player Portal | Cruz Coaching</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Alex+Brush&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
         body { background-color: var(--bg-primary); }
@@ -34,8 +34,25 @@
             top: 0;
             z-index: 100;
         }
-        .app-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; letter-spacing: 0px; }
-        .app-title .accent { font-size: 1.2rem; font-weight: 300; }
+        .app-title {
+            display: flex;
+            align-items: baseline;
+        }
+        .app-title .brand-cruz {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-right: 5px;
+            color: var(--text-primary);
+        }
+        .app-title .brand-coaching {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
 
         /* Login Screen */
         .login-screen {
@@ -282,13 +299,16 @@
         <!-- Header -->
         <div class="app-header">
             <a href="index.html" style="color: var(--text-primary); text-decoration: none; font-size: 1.2rem;">&larr;</a>
-            <div class="app-title">cruz<span class="accent">coaching</span></div>
+            <div class="app-title">
+                <span class="brand-cruz">Cruz</span>
+                <span class="brand-coaching">Coaching</span>
+            </div>
             <div style="width: 20px;"></div> <!-- spacer -->
         </div>
 
         <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
-            <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; margin-bottom: 0.5rem;">Parent Portal</h2>
+            <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;">Parent Portal</h2>
             <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">Manage schedule and attendance.</p>
             
             <div class="input-group">
