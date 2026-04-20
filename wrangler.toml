@@ -1,0 +1,7 @@
+name = "cruz-coaching-portal"
+compatibility_date = "2026-04-20"
+
+[[d1_databases]]
+binding = "DB" # This matches the `env.DB` referenced in your functions!
+database_name = "cruz-portal-db"
+database_id = "cruz-portal-db" # You will get a real ID when you deploy to Cloudflare
