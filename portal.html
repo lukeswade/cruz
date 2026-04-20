@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Player Portal | Cruz Coaching</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-color: var(--bg-primary); }
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--bg-secondary);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
+        }
+
+        /* Top Bar */
+        .app-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .app-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; letter-spacing: 0px; }
+        .app-title .accent { font-size: 1.2rem; font-weight: 300; }
+
+        /* Login Screen */
+        .login-screen {
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .input-group input:focus { border-color: var(--accent); outline: none; }
+
+        /* Dashboard Screen */
+        .dashboard-screen {
+            display: none;
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+        
+        /* Interactive Calendar Widget */
+        .calendar-widget {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .calendar-month {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .calendar-toggle-group {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+        .cal-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cal-toggle-btn.active {
+            background: rgba(176, 38, 255, 0.2);
+            color: var(--text-primary);
+        }
+        .calendar-days {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .cal-day-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            width: 30px;
+            text-align: center;
+        }
+        .calendar-dates {
+            display: flex;
+            justify-content: space-between;
+        }
+        .cal-date {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .cal-date:hover {
+            background: var(--glass-border);
+        }
+        .cal-date.active {
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+        }
+        .cal-date.has-session::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+        .cal-date-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Monthly View Additions */
+        #monthly-view .calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px 0; /* vertical gap */
+            justify-items: center;
+        }
+        #monthly-view .cal-date-container {
+            width: 100%;
+        }
+
+        /* Group Dropdown */
+        .group-select-container {
+            margin-bottom: 2rem;
+        }
+        .group-select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23a3a3a3" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+        .group-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Session Details */
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .session-date { font-weight: 600; font-size: 1.1rem; }
+        .session-time { color: var(--text-secondary); font-size: 0.9rem; }
+        
+        .attendance-toggle-box {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .toggle-info h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 600; }
+        .toggle-info p { color: var(--text-secondary); font-size: 0.85rem; }
+
+        /* Custom Switch */
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+            background-color: var(--text-secondary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--accent); border-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
+
+        /* Roster */
+        .roster-section h4 { font-weight: 500; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem; }
+        .roster-list { list-style: none; }
+        .roster-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .roster-item .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--glass-bg);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 500; color: var(--accent); margin-right: 1rem; font-size: 0.9rem;
+        }
+        .roster-name { font-size: 0.95rem; }
+        .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; margin-left: auto; }
+        .status-out { background: #f44336; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            display: flex;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--glass-border);
+            padding: 1rem 0;
+        }
+        .nav-item {
+            flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.8rem; text-decoration: none;
+        }
+        .nav-item.active { color: var(--accent); }
+
+        .empty-state {
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+    </style>
+</head>
+<body class="dark-theme">
+
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none; font-size: 1.2rem;">&larr;</a>
+            <div class="app-title">cruz<span class="accent">coaching</span></div>
+            <div style="width: 20px;"></div> <!-- spacer -->
+        </div>
+
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; margin-bottom: 0.5rem;">Parent Portal</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">Manage schedule and attendance.</p>
+            
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" value="parent@example.com">
+            </div>
+            <div class="input-group">
+                <label for="pass">Password</label>
+                <input type="password" id="pass" value="password123">
+            </div>
+            <button class="btn-primary" style="width: 100%; text-align: center; margin-top: 1rem;" onclick="doLogin()">Log In</button>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div class="dashboard-screen" id="dashboardScreen">
+            
+            <!-- Calendar Widget -->
+            <div class="calendar-widget">
+                <div class="calendar-header">
+                    <div class="calendar-month">April 2026</div>
+                    <div class="calendar-toggle-group">
+                        <button class="cal-toggle-btn active" id="btn-weekly" onclick="toggleCalendar('weekly')">Week</button>
+                        <button class="cal-toggle-btn" id="btn-monthly" onclick="toggleCalendar('monthly')">Month</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-days">
+                    <div class="cal-day-label">S</div><div class="cal-day-label">M</div><div class="cal-day-label">T</div>
+                    <div class="cal-day-label">W</div><div class="cal-day-label">T</div><div class="cal-day-label">F</div>
+                    <div class="cal-day-label">S</div>
+                </div>
+
+                <div id="weekly-view">
+                    <div class="calendar-dates">
+                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-19" onclick="selectDate(this)">19</div></div>
+                        <div class="cal-date-container"><div class="cal-date active has-session" data-date="2026-04-20" onclick="selectDate(this)">20</div></div>
+                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-21" onclick="selectDate(this)">21</div></div>
+                        <div class="cal-date-container"><div class="cal-date has-session" data-date="2026-04-22" onclick="selectDate(this)">22</div></div>
+                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-23" onclick="selectDate(this)">23</div></div>
+                        <div class="cal-date-container"><div class="cal-date has-session" data-date="2026-04-24" onclick="selectDate(this)">24</div></div>
+                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-25" onclick="selectDate(this)">25</div></div>
+                    </div>
+                </div>
+
+                <div id="monthly-view" style="display: none;">
+                    <div class="calendar-dates" id="monthly-grid">
+                        <!-- Javascript will dynamically populate a 35 node grid for the month -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Single Select Dropdown for Age Group -->
+            <div class="group-select-container">
+                <select class="group-select" id="groupSelect" onchange="changePlayer()">
+                <!-- Populated via Javascript -->
+                </select>
+            </div>
+
+            <!-- Session Specific Details -->
+            <div id="sessionContentWrapper">
+                <div class="session-header">
+                    <div>
+                        <div class="session-date" id="ui-session-date">Today</div>
+                        <div class="session-time" id="ui-session-time">Spirit Park • ?</div>
+                    </div>
+                </div>
+
+                <div class="attendance-toggle-box">
+                    <div class="toggle-info">
+                        <h4>Attendance</h4>
+                        <p id="attendance-status-text">Loading...</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="attendanceToggle" onchange="toggleAttendance()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="roster-section">
+                    <h4 id="ui-roster-count">Attending</h4>
+                    <ul class="roster-list" id="rosterList">
+                        <!-- Built via JS -->
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="noSessionMessage" class="empty-state" style="display: none;">
+                No practice session scheduled for this day.
+            </div>
+        </div>
+
+        <!-- Dashboard Bottom Nav -->
+        <div class="bottom-nav" id="bottomNav" style="display: none;">
+            <a href="#" class="nav-item active">Schedule</a>
+            <a href="#" class="nav-item">Progress</a>
+            <a href="#" class="nav-item">Billing</a>
+        </div>
+    </div>
+
+    <script>
+        let currentParentId = null;
+        let players = [];
+        let currentPlayer = null;
+        let currentSession = null;
+        let activeDate = '2026-04-20';
+
+        function buildMonthlyGrid() {
+            const grid = document.getElementById('monthly-grid');
+            grid.innerHTML = '';
+            // April 2026 starts on Wednesday (0=Sun, 3=Wed). Contains 30 days.
+            for(let i=0; i<3; i++) {
+                grid.innerHTML += `<div class="cal-date-container"></div>`; // empty buffer
+            }
+            for(let i=1; i<=30; i++) {
+                const dateStr = `2026-04-${i.toString().padStart(2, '0')}`;
+                let extraClass = (dateStr === activeDate) ? 'active' : '';
+                // Hardcode mock dots on days that typically have sessions
+                if ([20, 22, 24].includes(i)) {
+                    extraClass += ' has-session';
+                }
+                
+                grid.innerHTML += `
+                <div class="cal-date-container">
+                    <div class="cal-date ${extraClass}" data-date="${dateStr}" onclick="selectDate(this)">${i}</div>
+                </div>`;
+            }
+        }
+
+        async function doLogin() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+            
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: pass })
+            });
+            const data = await res.json();
+            
+            // Build month calendar out right away
+            buildMonthlyGrid();
+
+            if (data.success) {
+                currentParentId = data.parent_id;
+                players = data.players;
+                
+                // Populate dropdown
+                const select = document.getElementById('groupSelect');
+                select.innerHTML = '';
+                players.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = `${p.firstname} ${p.lastname} - ${p.group_name}`;
+                    select.appendChild(opt);
+                });
+                
+                currentPlayer = players[0]; // defaults to first child
+                
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardScreen').style.display = 'block';
+                document.getElementById('bottomNav').style.display = 'flex';
+                
+                await loadDashboard();
+            } else {
+                alert("Login failed. Check console.");
+            }
+        }
+        
+        async function changePlayer() {
+            const select = document.getElementById('groupSelect');
+            const p_id = parseInt(select.value);
+            currentPlayer = players.find(p => p.id === p_id);
+            await loadDashboard();
+        }
+
+        async function selectDate(el) {
+            // Un-highlight all dates in both views visually
+            document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('active'));
+            
+            // If the user clicks "20" in Monthly view, we should activate it in Weekly too if it exists.
+            const clickedDate = el.getAttribute('data-date');
+            document.querySelectorAll(`.cal-date[data-date="${clickedDate}"]`).forEach(d => d.classList.add('active'));
+            
+            activeDate = clickedDate;
+            await loadDashboard();
+        }
+
+        async function loadDashboard() {
+            const res = await fetch(`/api/dashboard/${currentPlayer.id}?date=${activeDate}`);
+            const data = await res.json();
+            currentSession = data.session;
+            
+            if(data.session) {
+                document.getElementById('sessionContentWrapper').style.display = 'block';
+                document.getElementById('noSessionMessage').style.display = 'none';
+                
+                document.getElementById('ui-session-date').textContent = data.session.date;
+                document.getElementById('ui-session-time').textContent = data.session.time_str;
+
+                document.getElementById('attendanceToggle').checked = data.my_attendance;
+                updateAttendanceText(data.my_attendance);
+                
+                document.getElementById('ui-roster-count').textContent = `Attending (${data.attending_count}/${data.total_count})`;
+                
+                const list = document.getElementById('rosterList');
+                list.innerHTML = '';
+                
+                data.roster.forEach(p => {
+                    if (p.is_me && !data.my_attendance) return; // Hide self if not attending
+                    const li = document.createElement('li');
+                    li.className = 'roster-item';
+                    if (p.is_me) li.id = 'myPlayerItem';
+                    
+                    const styleStr = !p.is_attending ? `style="color: #f44336;"` : '';
+                    const nameStyle = !p.is_attending ? `style="color: var(--text-secondary);"` : '';
+                    const indClass = p.is_attending ? 'status-indicator' : 'status-indicator status-out';
+                    const nameStr = `${p.firstname} ${p.lastname.charAt(0)}.` + (!p.is_attending ? " (Out)" : "");
+                    
+                    li.innerHTML = `
+                        <div class="avatar" ${styleStr}>${p.initials}</div>
+                        <div class="roster-name" ${nameStyle}>${nameStr}</div>
+                        <div class="${indClass}"></div>
+                    `;
+                    list.appendChild(li); 
+                });
+            } else {
+                // No session found for this date
+                document.getElementById('sessionContentWrapper').style.display = 'none';
+                document.getElementById('noSessionMessage').style.display = 'block';
+            }
+        }
+
+        function updateAttendanceText(isAttending) {
+            const text = document.getElementById('attendance-status-text');
+            if (isAttending) text.textContent = `${currentPlayer.firstname} is attending.`;
+            else text.textContent = `${currentPlayer.firstname} is NOT attending.`;
+        }
+
+        async function toggleAttendance() {
+            const isChecked = document.getElementById('attendanceToggle').checked;
+            updateAttendanceText(isChecked);
+            
+            if (currentSession && currentPlayer) {
+                await fetch('/api/attendance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        player_id: currentPlayer.id,
+                        session_id: currentSession.id,
+                        is_attending: isChecked ? 1 : 0
+                    })
+                });
+                await loadDashboard();
+            }
+        }
+
+        function toggleCalendar(view) {
+            try {
+                const btnWeekly = document.getElementById('btn-weekly');
+                const btnMonthly = document.getElementById('btn-monthly');
+                const viewWeekly = document.getElementById('weekly-view');
+                const viewMonthly = document.getElementById('monthly-view');
+
+                if (view === 'weekly') {
+                    btnWeekly.classList.add('active');
+                    btnMonthly.classList.remove('active');
+                    viewWeekly.style.display = 'block';
+                    viewMonthly.style.display = 'none';
+                } else {
+                    btnMonthly.classList.add('active');
+                    btnWeekly.classList.remove('active');
+                    viewMonthly.style.display = 'block';
+                    viewWeekly.style.display = 'none';
+                }
+            } catch (e) {
+                console.error("Toggle error:", e);
+            }
+        }
+    </script>
+</body>
+</html>
