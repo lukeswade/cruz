@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const navbar = document.querySelector('.navbar');
     const toggle = document.getElementById('mobile-toggle');
     const navLinks = document.querySelector('.nav-links');
-
     // Navbar scroll effect
     if (navbar) {
         window.addEventListener('scroll', () => {
@@ -16,14 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     // Mobile menu toggle
     if (toggle && navLinks) {
         toggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
     }
-
     // Smooth scroll + auto-close mobile menu — single unified handler
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -32,20 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                
-                // Close mobile menu if open
-                if (navLinks) {
-                    navLinks.classList.remove('active');
-                }
-                
-                // Scroll to target with navbar offset
+                if (navLinks) navLinks.classList.remove('active');
                 const offset = navbar ? navbar.offsetHeight + 10 : 0;
                 const top = target.getBoundingClientRect().top + window.scrollY - offset;
                 window.scrollTo({ top, behavior: 'smooth' });
             }
         });
     });
-
     // Intersection Observer for Scroll Animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -55,9 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, { threshold: 0.1 });
-
     document.querySelectorAll('.fade-up, .fade-left').forEach(el => observer.observe(el));
-    // Subscription gating for Sign‑Up section
+    // Subscription gating for Sign-Up section
     const signupContainer = document.getElementById('signup-container');
     const subscribePrompt = document.getElementById('subscribe-prompt');
     if (signupContainer && subscribePrompt) {
@@ -70,5 +58,50 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribePrompt.style.display = 'block';
         }
     }
-
+    // Instagram Feed
+    loadInstagramFeed();
 });
+
+async function loadInstagramFeed() {
+    const grid = document.getElementById('ig-grid');
+    if (!grid) return;
+
+    try {
+        const res = await fetch('/api/instagram');
+        const data = await res.json();
+
+        if (!data.data || data.error) {
+            grid.closest('section').style.display = 'none';
+            return;
+        }
+
+        data.data.forEach(post => {
+            const src = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+            if (!src) return;
+
+            const a = document.createElement('a');
+            a.href = post.permalink;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.className = 'ig-item';
+
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = 'Cruz Coaching on Instagram';
+            img.loading = 'lazy';
+
+            if (post.media_type === 'VIDEO') {
+                const badge = document.createElement('span');
+                badge.className = 'ig-video-badge';
+                badge.textContent = '▶';
+                a.appendChild(badge);
+            }
+
+            a.appendChild(img);
+            grid.appendChild(a);
+        });
+    } catch (e) {
+        const section = grid.closest('section');
+        if (section) section.style.display = 'none';
+    }
+}
