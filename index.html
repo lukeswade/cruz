@@ -29,7 +29,7 @@
                 <a href="#results" class="nav-link">Results</a>
                 <a href="#team" class="nav-link">Our Team</a>
                 <a href="#why" class="nav-link">Why Cruz</a>
-                <a href="#signup" class="nav-link">Sign Up</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
             </div>
             <a href="#book" class="btn-primary" id="nav-book-btn">Book Now</a>
             <div class="mobile-toggle" id="mobile-toggle">
@@ -51,7 +51,7 @@
                 <h1 class="display-title">Building <span class="accent">Footballers</span><br>Not Highlight Players</h1>
                 <p class="hero-subtitle">Premium DFW academy focused on European-tier development, tactical mastery, and creating college-ready athletes.</p>
             <div class="hero-actions">
-                <a href="#signup" class="btn-primary large">Sign Up</a>
+                <a href="#pricing" class="btn-primary large">Select Your Pass</a>
                 <a href="#book" class="btn-primary large">Book a Free Assessment</a>
                 <a href="#international" class="btn-secondary large glass">European Pathway</a>
             </div>
@@ -284,33 +284,45 @@
         </div>
     </section>
 
-    <!-- Sign Up Section ( gated ) -->
-    <section class="section-padding" id="signup">
+    <!-- Pricing Section -->
+    <section class="section-padding" id="pricing">
         <div class="section-header fade-up">
-            <h2 class="section-title">Parent Portal Access</h2>
-            <p class="section-subtitle">Only subscribed families can create an account to track attendance, view videos, and manage schedules.</p>
+            <h2 class="section-title">Select Your Pass</h2>
+            <p class="section-subtitle">Elite training for athletes committed to the next level. Select a pass to begin.</p>
         </div>
-        <div id="signup-container" class="fade-up" style="display:none;">
-            <form class="signup-form" action="https://cruzcoaching.as.me/signup" method="POST">
-                <div class="input-group">
-                    <label for="parent-email">Email</label>
-                    <input type="email" id="parent-email" name="email" placeholder="you@example.com" required />
-                </div>
-                <div class="input-group">
-                    <label for="parent-password">Password</label>
-                    <input type="password" id="parent-password" name="password" placeholder="Create a password" required />
-                </div>
-                <button type="submit" class="btn-primary large">Create Account</button>
-            </form>
-        </div>
-        <div id="subscribe-prompt" class="fade-up" style="display:none; text-align:center;">
-            <p class="section-subtitle">Subscribe to gain access to the parent portal.</p>
-            <a href="https://cruzcoaching.as.me/subscribe" target="_blank" class="btn-primary large">Subscribe / Purchase Access</a>
-            <p class="section-subtitle" style="margin-top:1rem;">Or pay via one of the options below:</p>
-            <div class="payment-options" style="display:flex; gap:0.5rem; justify-content:center; margin-top:0.5rem;">
-                <a href="https://www.paypal.com/paypalme/cruzcoaching" target="_blank" class="payment-btn">PayPal</a>
-                <a href="https://squareup.com/pay/cruzcoaching" target="_blank" class="payment-btn">Square</a>
-                <a href="https://checkout.stripe.com/pay/cruzcoaching" target="_blank" class="payment-btn">Stripe</a>
+        <div class="pricing-grid fade-up">
+            <!-- Single Session -->
+            <div class="pricing-card">
+                <h3>Single Session</h3>
+                <div class="price">$40<span>/session</span></div>
+                <ul class="pricing-features">
+                    <li>1-on-1 Elite Coaching</li>
+                    <li>Technical Assessment</li>
+                    <li>Performance Feedback</li>
+                </ul>
+                <a href="https://checkout.stripe.com/pay/single" class="btn-primary">Buy Now</a>
+            </div>
+            <!-- Weekly Pass -->
+            <div class="pricing-card featured">
+                <h3>Weekly Pass</h3>
+                <div class="price">$100<span>/week</span></div>
+                <ul class="pricing-features">
+                    <li>3 Training Sessions</li>
+                    <li>Priority Scheduling</li>
+                    <li>Video Analysis</li>
+                </ul>
+                <a href="https://checkout.stripe.com/pay/weekly" class="btn-primary">Buy Now</a>
+            </div>
+            <!-- Monthly Pass -->
+            <div class="pricing-card">
+                <h3>Monthly Pass</h3>
+                <div class="price">$200<span>/mo</span></div>
+                <ul class="pricing-features">
+                    <li>Unlimted Sessions</li>
+                    <li>Full Pathway Access</li>
+                    <li>D1 Recruitment Support</li>
+                </ul>
+                <a href="https://checkout.stripe.com/pay/monthly" class="btn-primary">Buy Now</a>
             </div>
         </div>
     </section>

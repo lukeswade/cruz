@@ -592,8 +592,9 @@ body.dark-theme {
 .team-media-container {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 320px; /* Reduced height to 'zoom out' vertically */
     overflow: hidden;
+    background: #000;
 }
 .team-photo, .team-video {
     position: absolute;
@@ -602,8 +603,12 @@ body.dark-theme {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%;
-    transition: opacity 0.4s ease;
+    object-position: center 15%; /* Adjusted for better framing */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.team-card:hover .team-photo {
+    transform: scale(1.05); /* Slight zoom in on hover for effect */
+    opacity: 0;
 }
 .team-video {
     opacity: 0;
@@ -633,7 +638,8 @@ body.dark-theme {
 .credibility-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1rem;
+    gap: 2.5rem; /* Increased gap for better spacing */
+    margin-top: 3rem;
 }
 
 .cred-item {
@@ -677,7 +683,57 @@ body.dark-theme {
     font-size: 0.9rem;
 }
 
-/* Footer Section */
+/* Pricing Grid */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.pricing-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+.pricing-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-10px);
+}
+.pricing-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 10px 40px var(--accent-glow);
+}
+.pricing-card h3 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+.price {
+    font-size: 3.5rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    margin-bottom: 1rem;
+}
+.price span {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+.pricing-features {
+    list-style: none;
+    margin: 2rem 0;
+    flex-grow: 1;
+}
+.pricing-features li {
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+}
+
 .footer {
     border-top: 1px solid var(--glass-border);
     border-radius: 40px 40px 0 0;
