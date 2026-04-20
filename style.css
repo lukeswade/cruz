@@ -623,10 +623,57 @@ body.dark-theme {
 }
 .team-info .role {
     color: var(--accent);
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 1rem;
-    
     letter-spacing: 1px;
+}
+
+/* Why Cruz / Credibility Section */
+.credibility-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.cred-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cred-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.cred-check {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(176, 38, 255, 0.15);
+    border: 1px solid rgba(176, 38, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.cred-item h4 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.cred-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 /* Footer Section */
