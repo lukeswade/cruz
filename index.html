@@ -199,7 +199,10 @@
         </div>
         <div class="team-grid">
             <div class="team-card glass fade-up">
-                <img src="assets/cruz.jpg" alt="Coach Cruz" class="team-photo">
+                <div class="team-media-container">
+                    <img src="assets/cruz.jpg" alt="Coach Cruz" class="team-photo">
+                    <video src="assets/cruz_highlight.mp4" class="team-video" muted loop playsinline></video>
+                </div>
                 <div class="team-info">
                     <h3>Coach Cruz</h3>
                     <p class="role">Founder & Head Trainer</p>
@@ -207,7 +210,10 @@
                 </div>
             </div>
             <div class="team-card glass fade-up" style="transition-delay: 200ms;">
-                <img src="assets/lee.jpg" alt="Coach Lee" class="team-photo">
+                <div class="team-media-container">
+                    <img src="assets/lee.jpg" alt="Coach Lee" class="team-photo">
+                    <video src="assets/lee_highlight.mp4" class="team-video" muted loop playsinline></video>
+                </div>
                 <div class="team-info">
                     <h3>Coach Lee</h3>
                     <p class="role">Senior Trainer</p>
@@ -228,7 +234,10 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="brand">cruz<span class="accent">coaching</span></div>
+            <div class="brand">
+                <span class="brand-cruz">Cruz</span>
+                <span class="brand-coaching">Coaching</span>
+            </div>
             <div class="footer-links">
                 <a href="https://www.instagram.com/cruzcoaching" target="_blank">Instagram</a>
                 <a href="mailto:info@cruzcoaching.net">Contact</a>
@@ -237,6 +246,16 @@
         </div>
     </footer>
 
+    <script>
+        // Highlight Video Hover Logic
+        document.querySelectorAll('.team-card').forEach(card => {
+            const video = card.querySelector('.team-video');
+            if (video) {
+                card.addEventListener('mouseenter', () => video.play().catch(e => {}));
+                card.addEventListener('mouseleave', () => video.pause());
+            }
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
