@@ -57,5 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-up, .fade-left').forEach(el => observer.observe(el));
+    // Subscription gating for Sign‑Up section
+    const signupContainer = document.getElementById('signup-container');
+    const subscribePrompt = document.getElementById('subscribe-prompt');
+    if (signupContainer && subscribePrompt) {
+        const hasSubscription = localStorage.getItem('hasSubscription') === 'true';
+        if (hasSubscription) {
+            signupContainer.style.display = 'block';
+            subscribePrompt.style.display = 'none';
+        } else {
+            signupContainer.style.display = 'none';
+            subscribePrompt.style.display = 'block';
+        }
+    }
 
 });

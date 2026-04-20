@@ -284,23 +284,35 @@
         </div>
     </section>
 
-    <!-- Sign Up Section -->
+    <!-- Sign Up Section ( gated ) -->
     <section class="section-padding" id="signup">
         <div class="section-header fade-up">
-            <h2 class="section-title">Parent Portal Sign Up</h2>
-            <p class="section-subtitle">Create your account to track attendance, view videos, and manage your child's schedule.</p>
+            <h2 class="section-title">Parent Portal Access</h2>
+            <p class="section-subtitle">Only subscribed families can create an account to track attendance, view videos, and manage schedules.</p>
         </div>
-        <form class="signup-form fade-up" action="https://cruzcoaching.as.me/signup" method="POST">
-            <div class="input-group">
-                <label for="parent-email">Email</label>
-                <input type="email" id="parent-email" name="email" placeholder="you@example.com" required />
+        <div id="signup-container" class="fade-up" style="display:none;">
+            <form class="signup-form" action="https://cruzcoaching.as.me/signup" method="POST">
+                <div class="input-group">
+                    <label for="parent-email">Email</label>
+                    <input type="email" id="parent-email" name="email" placeholder="you@example.com" required />
+                </div>
+                <div class="input-group">
+                    <label for="parent-password">Password</label>
+                    <input type="password" id="parent-password" name="password" placeholder="Create a password" required />
+                </div>
+                <button type="submit" class="btn-primary large">Create Account</button>
+            </form>
+        </div>
+        <div id="subscribe-prompt" class="fade-up" style="display:none; text-align:center;">
+            <p class="section-subtitle">Subscribe to gain access to the parent portal.</p>
+            <a href="https://cruzcoaching.as.me/subscribe" target="_blank" class="btn-primary large">Subscribe / Purchase Access</a>
+            <p class="section-subtitle" style="margin-top:1rem;">Or pay via one of the options below:</p>
+            <div class="payment-options" style="display:flex; gap:0.5rem; justify-content:center; margin-top:0.5rem;">
+                <a href="https://www.paypal.com/paypalme/cruzcoaching" target="_blank" class="payment-btn">PayPal</a>
+                <a href="https://squareup.com/pay/cruzcoaching" target="_blank" class="payment-btn">Square</a>
+                <a href="https://checkout.stripe.com/pay/cruzcoaching" target="_blank" class="payment-btn">Stripe</a>
             </div>
-            <div class="input-group">
-                <label for="parent-password">Password</label>
-                <input type="password" id="parent-password" name="password" placeholder="Create a password" required />
-            </div>
-            <button type="submit" class="btn-primary large">Create Account</button>
-        </form>
+        </div>
     </section>
 
             <div class="booking-options">
