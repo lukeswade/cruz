@@ -200,7 +200,8 @@
         <div class="team-grid">
             <div class="team-card glass fade-up">
                 <div class="team-media-container">
-                    <iframe src="https://www.youtube.com/embed/hiuJU5lkQLg?si=UNbvRAvptI_JBDLx&autoplay=1&mute=1&loop=1&playlist=hiuJU5lkQLg&controls=0&showinfo=0&rel=0" style="position: absolute; top:0; left:0; width:100%; height:100%; border: none;" allow="autoplay; fullscreen"></iframe>
+                    <img class="team-photo" src="assets/cruz.jpg" alt="Coach Cruz">
+                    <iframe class="team-video" src="https://www.youtube.com/embed/hiuJU5lkQLg?si=UNbvRAvptI_JBDLx&enablejsapi=1&mute=1&loop=1&playlist=hiuJU5lkQLg&controls=0&showinfo=0&rel=0&playsinline=1" style="position: absolute; top:0; left:0; width:100%; height:100%; border: none; pointer-events: none;" allow="autoplay; fullscreen"></iframe>
                 </div>
                 <div class="team-info">
                     <h3>Coach Cruz</h3>
@@ -210,7 +211,8 @@
             </div>
             <div class="team-card glass fade-up" style="transition-delay: 200ms;">
                 <div class="team-media-container">
-                    <iframe src="https://www.youtube.com/embed/wR8NcvOrQz4?autoplay=1&mute=1&loop=1&playlist=wR8NcvOrQz4&controls=0&showinfo=0&rel=0&playsinline=1" style="position: absolute; top:0; left:0; width:100%; height:100%; border: none; pointer-events: none;" allow="autoplay; fullscreen"></iframe>
+                    <img class="team-photo" src="assets/lee.jpg" alt="Coach Lee" style="object-position: center 30%;">
+                    <iframe class="team-video" src="https://www.youtube.com/embed/wR8NcvOrQz4?enablejsapi=1&mute=1&loop=1&playlist=wR8NcvOrQz4&controls=0&showinfo=0&rel=0&playsinline=1" style="position: absolute; top:0; left:0; width:100%; height:100%; border: none; pointer-events: none;" allow="autoplay; fullscreen"></iframe>
                 </div>
                 <div class="team-info">
                     <h3>Coach Lee</h3>
@@ -245,15 +247,28 @@
         </div>
     </footer>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // Highlight Video Hover Logic
-        document.querySelectorAll('.team-card').forEach(card => {
-            const video = card.querySelector('.team-video');
-            if (video && video.tagName === 'VIDEO') {
-                card.addEventListener('mouseenter', () => video.play().catch(e => {}));
-                card.addEventListener('mouseleave', () => video.pause());
-            }
-        });
+        // Highlight Video Hover Logic (using YouTube API)
+        let ytPlayers = [];
+        
+        function onYouTubeIframeAPIReady() {
+            document.querySelectorAll('.team-card .team-video').forEach((iframe, idx) => {
+                const uniqueId = 'yt-player-' + idx;
+                iframe.id = uniqueId;
+                
+                const player = new YT.Player(uniqueId, {
+                    events: {
+                        'onReady': (event) => {
+                            const card = iframe.closest('.team-card');
+                            card.addEventListener('mouseenter', () => event.target.playVideo());
+                            card.addEventListener('mouseleave', () => event.target.pauseVideo());
+                        }
+                    }
+                });
+                ytPlayers.push(player);
+            });
+        }
     </script>
     <script src="script.js"></script>
 </body>
