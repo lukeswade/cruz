@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- PWA Setup -->
-    <meta name="theme-color" content="#B026FF">
+    <meta name="theme-color" content="#050505">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,11 +13,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Alex+Brush&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { background-color: var(--bg-primary); }
+        body { background-color: var(--bg-primary); margin: 0; }
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
+            min-height: 100dvh;
             background: var(--bg-secondary);
             position: relative;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
@@ -29,13 +30,14 @@
 
         /* Top Bar */
         .app-header {
-            padding: 1.5rem;
+            padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -43,22 +45,34 @@
         .app-title {
             display: flex;
             align-items: baseline;
+            text-decoration: none;
         }
         .app-title .brand-cruz {
             font-family: 'Alex Brush', cursive;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 400;
-            margin-right: 5px;
+            margin-right: 4px;
             color: var(--text-primary);
         }
         .app-title .brand-coaching {
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
             font-weight: 300;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--accent);
         }
+        .header-action {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        .header-action:hover { color: var(--accent); }
 
         /* Login Screen */
         .login-screen {
@@ -68,18 +82,57 @@
             justify-content: center;
             flex: 1;
         }
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-logo .brand-cruz {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+        .login-logo .brand-coaching {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-top: -5px;
+        }
         .input-group { margin-bottom: 1.5rem; }
-        .input-group label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.85rem; font-weight: 400; }
         .input-group input {
             width: 100%;
-            padding: 1rem;
+            padding: 0.9rem 1rem;
             background: var(--bg-primary);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
+            font-family: var(--font-body);
+            transition: border-color 0.2s;
         }
         .input-group input:focus { border-color: var(--accent); outline: none; }
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: var(--font-display);
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 30px rgba(176, 38, 255, 0.5); }
+        .login-btn:active { transform: scale(0.98); }
 
         /* Dashboard Screen */
         .dashboard-screen {
@@ -87,14 +140,29 @@
             flex: 1;
             padding: 1.5rem;
             overflow-y: auto;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            margin-bottom: 1.5rem;
+        }
+        .welcome-banner h2 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .welcome-banner p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
         }
         
         /* Interactive Calendar Widget */
         .calendar-widget {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -105,8 +173,8 @@
             margin-bottom: 1rem;
         }
         .calendar-month {
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 500;
+            font-size: 1rem;
         }
         .calendar-toggle-group {
             display: flex;
@@ -119,10 +187,11 @@
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            padding: 4px 12px;
-            font-size: 0.8rem;
+            padding: 4px 14px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: 0.3s;
+            font-family: var(--font-body);
         }
         .cal-toggle-btn.active {
             background: rgba(176, 38, 255, 0.2);
@@ -134,39 +203,42 @@
             margin-bottom: 0.5rem;
         }
         .cal-day-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
-            width: 30px;
+            width: 36px;
             text-align: center;
+            font-weight: 500;
         }
         .calendar-dates {
             display: flex;
             justify-content: space-between;
         }
         .cal-date {
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             cursor: pointer;
             transition: 0.2s;
+            -webkit-tap-highlight-color: transparent;
         }
-        .cal-date:hover {
-            background: var(--glass-border);
-        }
+        .cal-date:hover { background: var(--glass-border); }
         .cal-date.active {
             background: var(--accent);
             color: #fff;
             font-weight: 600;
         }
+        .cal-date.today:not(.active) {
+            border: 1px solid var(--accent);
+        }
         .cal-date.has-session::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: 0;
             width: 4px;
             height: 4px;
             border-radius: 50%;
@@ -183,25 +255,21 @@
         #monthly-view .calendar-dates {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px 0; /* vertical gap */
+            gap: 6px 0;
             justify-items: center;
         }
-        #monthly-view .cal-date-container {
-            width: 100%;
-        }
+        #monthly-view .cal-date-container { width: 100%; }
 
         /* Group Dropdown */
-        .group-select-container {
-            margin-bottom: 2rem;
-        }
+        .group-select-container { margin-bottom: 1.5rem; }
         .group-select {
             width: 100%;
-            padding: 1rem;
+            padding: 0.85rem 1rem;
             background: var(--bg-primary);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-family: var(--font-body);
             appearance: none;
             -webkit-appearance: none;
@@ -209,132 +277,197 @@
             background-image: url('data:image/svg+xml;utf8,<svg fill="%23a3a3a3" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
             background-repeat: no-repeat;
             background-position: right 1rem center;
+            transition: border-color 0.2s;
         }
-        .group-select:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
+        .group-select:focus { outline: none; border-color: var(--accent); }
 
         /* Session Details */
-        .session-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
+        .session-header { margin-bottom: 1rem; }
+        .session-date {
+            font-weight: 500;
+            font-size: 1.05rem;
+            margin-bottom: 2px;
         }
-        .session-date { font-weight: 600; font-size: 1.1rem; }
-        .session-time { color: var(--text-secondary); font-size: 0.9rem; }
+        .session-time { color: var(--text-secondary); font-size: 0.85rem; }
         
         .attendance-toggle-box {
             background: var(--bg-primary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
             border: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .toggle-info h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 600; }
-        .toggle-info p { color: var(--text-secondary); font-size: 0.85rem; }
+        .toggle-info h4 { font-size: 1rem; margin-bottom: 3px; font-weight: 500; }
+        .toggle-info p { color: var(--text-secondary); font-size: 0.8rem; }
 
         /* Custom Switch */
-        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
             background-color: var(--bg-secondary);
             border: 1px solid var(--glass-border);
-            transition: .4s;
+            transition: .3s;
             border-radius: 34px;
         }
         .slider:before {
             position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
             background-color: var(--text-secondary);
-            transition: .4s;
+            transition: .3s;
             border-radius: 50%;
         }
         input:checked + .slider { background-color: var(--accent); border-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(22px); background-color: #fff; }
 
         /* Roster */
-        .roster-section h4 { font-weight: 500; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem; }
+        .roster-section h4 {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         .roster-list { list-style: none; }
         .roster-item {
             display: flex;
             align-items: center;
-            padding: 0.8rem 0;
+            padding: 0.7rem 0;
             border-bottom: 1px solid var(--glass-border);
         }
+        .roster-item:last-child { border-bottom: none; }
         .roster-item .avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--glass-bg);
+            width: 34px; height: 34px; border-radius: 50%;
+            background: rgba(176, 38, 255, 0.1);
+            border: 1px solid rgba(176, 38, 255, 0.2);
             display: flex; align-items: center; justify-content: center;
-            font-weight: 500; color: var(--accent); margin-right: 1rem; font-size: 0.9rem;
+            font-weight: 500; color: var(--accent); margin-right: 0.8rem; font-size: 0.75rem;
         }
-        .roster-name { font-size: 0.95rem; }
-        .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; margin-left: auto; }
+        .roster-name { font-size: 0.9rem; flex: 1; }
+        .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; margin-left: auto; flex-shrink: 0; }
         .status-out { background: #f44336; }
 
         /* Bottom Nav */
         .bottom-nav {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
             display: flex;
-            background: var(--bg-secondary);
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--glass-border);
-            padding: 1rem 0;
+            padding: 0.8rem 0;
+            padding-bottom: max(0.8rem, env(safe-area-inset-bottom));
+            z-index: 100;
         }
         .nav-item {
-            flex: 1; text-align: center; color: var(--text-secondary); font-size: 0.8rem; text-decoration: none;
+            flex: 1;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+            -webkit-tap-highlight-color: transparent;
         }
+        .nav-item .nav-icon { font-size: 1.2rem; }
         .nav-item.active { color: var(--accent); }
 
         .empty-state {
-            padding: 2rem 0;
+            padding: 3rem 1rem;
             text-align: center;
             color: var(--text-secondary);
-            font-style: italic;
         }
+        .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.4;
+        }
+
+        /* Loading spinner */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5,5,5,0.8);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid var(--glass-border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
     </style>
 </head>
 <body class="dark-theme">
 
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
     <div class="app-container">
         <!-- Header -->
         <div class="app-header">
-            <a href="index.html" style="color: var(--text-primary); text-decoration: none; font-size: 1.2rem;">&larr;</a>
+            <a href="index.html" style="color: var(--text-primary); text-decoration: none; font-size: 1.1rem;">&larr;</a>
             <div class="app-title">
                 <span class="brand-cruz">Cruz</span>
                 <span class="brand-coaching">Coaching</span>
             </div>
-            <div style="width: 20px;"></div> <!-- spacer -->
+            <button class="header-action" id="logoutBtn" onclick="doLogout()" style="display: none;">Log out</button>
+            <div id="headerSpacer" style="width: 50px;"></div>
         </div>
 
         <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
-            <h2 style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;">Parent Portal</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">Manage schedule and attendance.</p>
+            <div class="login-logo">
+                <span class="brand-cruz">Cruz</span>
+                <span class="brand-coaching">Coaching</span>
+            </div>
+            <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; margin-bottom: 0.3rem; text-align: center;">Parent Portal</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; text-align: center;">Manage schedule and attendance</p>
             
             <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" value="parent@example.com">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
             </div>
             <div class="input-group">
                 <label for="pass">Password</label>
-                <input type="password" id="pass" value="password123">
+                <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
             </div>
-            <button class="btn-primary" style="width: 100%; text-align: center; margin-top: 1rem;" onclick="doLogin()">Log In</button>
+            <button class="login-btn" onclick="doLogin()">Log In</button>
+            <p id="loginError" style="color: #f44336; text-align: center; margin-top: 1rem; font-size: 0.85rem; display: none;"></p>
         </div>
 
         <!-- Dashboard Screen -->
         <div class="dashboard-screen" id="dashboardScreen">
             
+            <!-- Welcome -->
+            <div class="welcome-banner" id="welcomeBanner">
+                <h2 id="welcomeText">Welcome back</h2>
+                <p>Tap a date to view practice details</p>
+            </div>
+
             <!-- Calendar Widget -->
             <div class="calendar-widget">
                 <div class="calendar-header">
-                    <div class="calendar-month">April 2026</div>
+                    <div class="calendar-month" id="calendarMonthLabel">April 2026</div>
                     <div class="calendar-toggle-group">
                         <button class="cal-toggle-btn active" id="btn-weekly" onclick="toggleCalendar('weekly')">Week</button>
                         <button class="cal-toggle-btn" id="btn-monthly" onclick="toggleCalendar('monthly')">Month</button>
@@ -348,38 +481,29 @@
                 </div>
 
                 <div id="weekly-view">
-                    <div class="calendar-dates">
-                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-19" onclick="selectDate(this)">19</div></div>
-                        <div class="cal-date-container"><div class="cal-date active has-session" data-date="2026-04-20" onclick="selectDate(this)">20</div></div>
-                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-21" onclick="selectDate(this)">21</div></div>
-                        <div class="cal-date-container"><div class="cal-date has-session" data-date="2026-04-22" onclick="selectDate(this)">22</div></div>
-                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-23" onclick="selectDate(this)">23</div></div>
-                        <div class="cal-date-container"><div class="cal-date has-session" data-date="2026-04-24" onclick="selectDate(this)">24</div></div>
-                        <div class="cal-date-container"><div class="cal-date" data-date="2026-04-25" onclick="selectDate(this)">25</div></div>
+                    <div class="calendar-dates" id="weekly-grid">
+                        <!-- Built via JS -->
                     </div>
                 </div>
 
                 <div id="monthly-view" style="display: none;">
                     <div class="calendar-dates" id="monthly-grid">
-                        <!-- Javascript will dynamically populate a 35 node grid for the month -->
+                        <!-- Built via JS -->
                     </div>
                 </div>
             </div>
 
-            <!-- Single Select Dropdown for Age Group -->
+            <!-- Player Dropdown -->
             <div class="group-select-container">
                 <select class="group-select" id="groupSelect" onchange="changePlayer()">
-                <!-- Populated via Javascript -->
                 </select>
             </div>
 
-            <!-- Session Specific Details -->
+            <!-- Session Details -->
             <div id="sessionContentWrapper">
                 <div class="session-header">
-                    <div>
-                        <div class="session-date" id="ui-session-date">Today</div>
-                        <div class="session-time" id="ui-session-time">Spirit Park • ?</div>
-                    </div>
+                    <div class="session-date" id="ui-session-date">Today</div>
+                    <div class="session-time" id="ui-session-time">Loading...</div>
                 </div>
 
                 <div class="attendance-toggle-box">
@@ -395,162 +519,271 @@
 
                 <div class="roster-section">
                     <h4 id="ui-roster-count">Attending</h4>
-                    <ul class="roster-list" id="rosterList">
-                        <!-- Built via JS -->
-                    </ul>
+                    <ul class="roster-list" id="rosterList"></ul>
                 </div>
             </div>
             
             <div id="noSessionMessage" class="empty-state" style="display: none;">
-                No practice session scheduled for this day.
+                <div class="empty-state-icon">⚽</div>
+                <p>No practice scheduled for this day.</p>
             </div>
         </div>
 
-        <!-- Dashboard Bottom Nav -->
+        <!-- Bottom Nav -->
         <div class="bottom-nav" id="bottomNav" style="display: none;">
-            <a href="#" class="nav-item active">Schedule</a>
-            <a href="#" class="nav-item">Progress</a>
-            <a href="#" class="nav-item">Billing</a>
+            <a href="#" class="nav-item active" onclick="return false;">
+                <span class="nav-icon">📅</span>
+                Schedule
+            </a>
+            <a href="#" class="nav-item" onclick="return false;">
+                <span class="nav-icon">📊</span>
+                Progress
+            </a>
+            <a href="#" class="nav-item" onclick="return false;">
+                <span class="nav-icon">💳</span>
+                Billing
+            </a>
         </div>
     </div>
 
     <script>
+        // ── State ──
         let currentParentId = null;
         let players = [];
         let currentPlayer = null;
         let currentSession = null;
-        let activeDate = '2026-04-20';
+        
+        // Use today's actual date
+        const now = new Date();
+        let activeDate = now.toISOString().split('T')[0];
+        let activeMonth = now.getMonth();  // 0-indexed
+        let activeYear = now.getFullYear();
+
+        // ── Date Utils ──
+        function formatDateStr(y, m, d) {
+            return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        }
+        function getWeekDates(dateStr) {
+            const d = new Date(dateStr + 'T12:00:00');
+            const day = d.getDay();
+            const sun = new Date(d);
+            sun.setDate(d.getDate() - day);
+            const dates = [];
+            for (let i = 0; i < 7; i++) {
+                const cur = new Date(sun);
+                cur.setDate(sun.getDate() + i);
+                dates.push(formatDateStr(cur.getFullYear(), cur.getMonth(), cur.getDate()));
+            }
+            return dates;
+        }
+
+        // ── Calendar Builders ──
+        const sessionDays = [20, 22, 24]; // mock session indicators
+
+        function buildWeeklyGrid() {
+            const grid = document.getElementById('weekly-grid');
+            grid.innerHTML = '';
+            const weekDates = getWeekDates(activeDate);
+            const todayStr = now.toISOString().split('T')[0];
+            
+            weekDates.forEach(dateStr => {
+                const dayNum = parseInt(dateStr.split('-')[2]);
+                const month = parseInt(dateStr.split('-')[1]);
+                let cls = 'cal-date';
+                if (dateStr === activeDate) cls += ' active';
+                if (dateStr === todayStr) cls += ' today';
+                if (sessionDays.includes(dayNum) && month === 4) cls += ' has-session';
+                
+                grid.innerHTML += `<div class="cal-date-container"><div class="${cls}" data-date="${dateStr}" onclick="selectDate(this)">${dayNum}</div></div>`;
+            });
+        }
 
         function buildMonthlyGrid() {
             const grid = document.getElementById('monthly-grid');
             grid.innerHTML = '';
-            // April 2026 starts on Wednesday (0=Sun, 3=Wed). Contains 30 days.
-            for(let i=0; i<3; i++) {
-                grid.innerHTML += `<div class="cal-date-container"></div>`; // empty buffer
+            const firstDay = new Date(activeYear, activeMonth, 1).getDay();
+            const daysInMonth = new Date(activeYear, activeMonth + 1, 0).getDate();
+            const todayStr = now.toISOString().split('T')[0];
+
+            for (let i = 0; i < firstDay; i++) {
+                grid.innerHTML += '<div class="cal-date-container"></div>';
             }
-            for(let i=1; i<=30; i++) {
-                const dateStr = `2026-04-${i.toString().padStart(2, '0')}`;
-                let extraClass = (dateStr === activeDate) ? 'active' : '';
-                // Hardcode mock dots on days that typically have sessions
-                if ([20, 22, 24].includes(i)) {
-                    extraClass += ' has-session';
-                }
-                
-                grid.innerHTML += `
-                <div class="cal-date-container">
-                    <div class="cal-date ${extraClass}" data-date="${dateStr}" onclick="selectDate(this)">${i}</div>
-                </div>`;
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dateStr = formatDateStr(activeYear, activeMonth, i);
+                let cls = 'cal-date';
+                if (dateStr === activeDate) cls += ' active';
+                if (dateStr === todayStr) cls += ' today';
+                if (sessionDays.includes(i) && activeMonth === 3) cls += ' has-session';
+                grid.innerHTML += `<div class="cal-date-container"><div class="${cls}" data-date="${dateStr}" onclick="selectDate(this)">${i}</div></div>`;
             }
+            
+            // Update month label
+            const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            document.getElementById('calendarMonthLabel').textContent = `${monthNames[activeMonth]} ${activeYear}`;
         }
+
+        // ── Auth ──
+        function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
 
         async function doLogin() {
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const pass = document.getElementById('pass').value;
-            
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, password: pass })
-            });
-            const data = await res.json();
-            
-            // Build month calendar out right away
-            buildMonthlyGrid();
+            const errEl = document.getElementById('loginError');
+            errEl.style.display = 'none';
 
-            if (data.success) {
-                currentParentId = data.parent_id;
-                players = data.players;
-                
-                // Populate dropdown
-                const select = document.getElementById('groupSelect');
-                select.innerHTML = '';
-                players.forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p.id;
-                    opt.textContent = `${p.firstname} ${p.lastname} - ${p.group_name}`;
-                    select.appendChild(opt);
-                });
-                
-                currentPlayer = players[0]; // defaults to first child
-                
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboardScreen').style.display = 'block';
-                document.getElementById('bottomNav').style.display = 'flex';
-                
-                await loadDashboard();
-            } else {
-                alert("Login failed. Check console.");
+            if (!email || !pass) {
+                errEl.textContent = 'Please enter email and password.';
+                errEl.style.display = 'block';
+                return;
             }
+
+            showLoading();
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password: pass })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    // Persist session
+                    localStorage.setItem('cruz_session', JSON.stringify({
+                        parent_id: data.parent_id,
+                        players: data.players,
+                        email: email
+                    }));
+                    initDashboard(data.parent_id, data.players);
+                } else {
+                    errEl.textContent = 'Invalid email or password.';
+                    errEl.style.display = 'block';
+                }
+            } catch (e) {
+                errEl.textContent = 'Network error. Please try again.';
+                errEl.style.display = 'block';
+            }
+            hideLoading();
+        }
+
+        function doLogout() {
+            localStorage.removeItem('cruz_session');
+            currentParentId = null;
+            players = [];
+            currentPlayer = null;
+            currentSession = null;
+            
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('headerSpacer').style.display = 'block';
+            document.getElementById('email').value = '';
+            document.getElementById('pass').value = '';
+        }
+
+        function initDashboard(parentId, playersList) {
+            currentParentId = parentId;
+            players = playersList;
+
+            // Populate dropdown
+            const select = document.getElementById('groupSelect');
+            select.innerHTML = '';
+            players.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `${p.firstname} ${p.lastname} – ${p.group_name}`;
+                select.appendChild(opt);
+            });
+            
+            currentPlayer = players[0];
+
+            // Welcome text
+            document.getElementById('welcomeText').textContent = `Welcome, ${players[0].firstname}'s family`;
+
+            // Show dashboard
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboardScreen').style.display = 'block';
+            document.getElementById('bottomNav').style.display = 'flex';
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('headerSpacer').style.display = 'none';
+
+            buildWeeklyGrid();
+            buildMonthlyGrid();
+            loadDashboard();
         }
         
+        // ── Player and Date Switching ──
         async function changePlayer() {
-            const select = document.getElementById('groupSelect');
-            const p_id = parseInt(select.value);
+            const p_id = parseInt(document.getElementById('groupSelect').value);
             currentPlayer = players.find(p => p.id === p_id);
             await loadDashboard();
         }
 
         async function selectDate(el) {
-            // Un-highlight all dates in both views visually
             document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('active'));
-            
-            // If the user clicks "20" in Monthly view, we should activate it in Weekly too if it exists.
             const clickedDate = el.getAttribute('data-date');
             document.querySelectorAll(`.cal-date[data-date="${clickedDate}"]`).forEach(d => d.classList.add('active'));
-            
             activeDate = clickedDate;
             await loadDashboard();
         }
 
+        // ── Dashboard Data ──
         async function loadDashboard() {
-            const res = await fetch(`/api/dashboard/${currentPlayer.id}?date=${activeDate}`);
-            const data = await res.json();
-            currentSession = data.session;
-            
-            if(data.session) {
-                document.getElementById('sessionContentWrapper').style.display = 'block';
-                document.getElementById('noSessionMessage').style.display = 'none';
+            try {
+                const res = await fetch(`/api/dashboard/${currentPlayer.id}?date=${activeDate}`);
+                const data = await res.json();
+                currentSession = data.session;
                 
-                document.getElementById('ui-session-date').textContent = data.session.date;
-                document.getElementById('ui-session-time').textContent = data.session.time_str;
+                if (data.session) {
+                    document.getElementById('sessionContentWrapper').style.display = 'block';
+                    document.getElementById('noSessionMessage').style.display = 'none';
+                    
+                    // Format date nicely
+                    const d = new Date(data.session.date + 'T12:00:00');
+                    const opts = { weekday: 'long', month: 'long', day: 'numeric' };
+                    document.getElementById('ui-session-date').textContent = d.toLocaleDateString('en-US', opts);
+                    document.getElementById('ui-session-time').textContent = data.session.time_str;
 
-                document.getElementById('attendanceToggle').checked = data.my_attendance;
-                updateAttendanceText(data.my_attendance);
-                
-                document.getElementById('ui-roster-count').textContent = `Attending (${data.attending_count}/${data.total_count})`;
-                
-                const list = document.getElementById('rosterList');
-                list.innerHTML = '';
-                
-                data.roster.forEach(p => {
-                    if (p.is_me && !data.my_attendance) return; // Hide self if not attending
-                    const li = document.createElement('li');
-                    li.className = 'roster-item';
-                    if (p.is_me) li.id = 'myPlayerItem';
+                    document.getElementById('attendanceToggle').checked = data.my_attendance;
+                    updateAttendanceText(data.my_attendance);
                     
-                    const styleStr = !p.is_attending ? `style="color: #f44336;"` : '';
-                    const nameStyle = !p.is_attending ? `style="color: var(--text-secondary);"` : '';
-                    const indClass = p.is_attending ? 'status-indicator' : 'status-indicator status-out';
-                    const nameStr = `${p.firstname} ${p.lastname.charAt(0)}.` + (!p.is_attending ? " (Out)" : "");
+                    document.getElementById('ui-roster-count').textContent = `Attending ${data.attending_count}/${data.total_count}`;
                     
-                    li.innerHTML = `
-                        <div class="avatar" ${styleStr}>${p.initials}</div>
-                        <div class="roster-name" ${nameStyle}>${nameStr}</div>
-                        <div class="${indClass}"></div>
-                    `;
-                    list.appendChild(li); 
-                });
-            } else {
-                // No session found for this date
-                document.getElementById('sessionContentWrapper').style.display = 'none';
-                document.getElementById('noSessionMessage').style.display = 'block';
+                    const list = document.getElementById('rosterList');
+                    list.innerHTML = '';
+                    
+                    data.roster.forEach(p => {
+                        if (p.is_me && !data.my_attendance) return;
+                        const li = document.createElement('li');
+                        li.className = 'roster-item';
+                        
+                        const avatarColor = !p.is_attending ? 'style="color: #f44336; background: rgba(244,67,54,0.1); border-color: rgba(244,67,54,0.2);"' : '';
+                        const nameStyle = !p.is_attending ? 'style="color: var(--text-secondary);"' : '';
+                        const indClass = p.is_attending ? 'status-indicator' : 'status-indicator status-out';
+                        const nameStr = `${p.firstname} ${p.lastname.charAt(0)}.` + (!p.is_attending ? ' (Out)' : '');
+                        
+                        li.innerHTML = `
+                            <div class="avatar" ${avatarColor}>${p.initials}</div>
+                            <div class="roster-name" ${nameStyle}>${nameStr}</div>
+                            <div class="${indClass}"></div>
+                        `;
+                        list.appendChild(li);
+                    });
+                } else {
+                    document.getElementById('sessionContentWrapper').style.display = 'none';
+                    document.getElementById('noSessionMessage').style.display = 'block';
+                }
+            } catch (e) {
+                console.error('Dashboard load error:', e);
             }
         }
 
         function updateAttendanceText(isAttending) {
             const text = document.getElementById('attendance-status-text');
-            if (isAttending) text.textContent = `${currentPlayer.firstname} is attending.`;
-            else text.textContent = `${currentPlayer.firstname} is NOT attending.`;
+            text.textContent = isAttending 
+                ? `${currentPlayer.firstname} is attending.`
+                : `${currentPlayer.firstname} is NOT attending.`;
         }
 
         async function toggleAttendance() {
@@ -558,48 +791,64 @@
             updateAttendanceText(isChecked);
             
             if (currentSession && currentPlayer) {
-                await fetch('/api/attendance', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        player_id: currentPlayer.id,
-                        session_id: currentSession.id,
-                        is_attending: isChecked ? 1 : 0
-                    })
-                });
-                await loadDashboard();
+                try {
+                    await fetch('/api/attendance', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            player_id: currentPlayer.id,
+                            session_id: currentSession.id,
+                            is_attending: isChecked ? 1 : 0
+                        })
+                    });
+                    await loadDashboard();
+                } catch (e) {
+                    console.error('Attendance toggle error:', e);
+                }
             }
         }
 
         function toggleCalendar(view) {
-            try {
-                const btnWeekly = document.getElementById('btn-weekly');
-                const btnMonthly = document.getElementById('btn-monthly');
-                const viewWeekly = document.getElementById('weekly-view');
-                const viewMonthly = document.getElementById('monthly-view');
+            const btnWeekly = document.getElementById('btn-weekly');
+            const btnMonthly = document.getElementById('btn-monthly');
+            const viewWeekly = document.getElementById('weekly-view');
+            const viewMonthly = document.getElementById('monthly-view');
 
-                if (view === 'weekly') {
-                    btnWeekly.classList.add('active');
-                    btnMonthly.classList.remove('active');
-                    viewWeekly.style.display = 'block';
-                    viewMonthly.style.display = 'none';
-                } else {
-                    btnMonthly.classList.add('active');
-                    btnWeekly.classList.remove('active');
-                    viewMonthly.style.display = 'block';
-                    viewWeekly.style.display = 'none';
-                }
-            } catch (e) {
-                console.error("Toggle error:", e);
+            if (view === 'weekly') {
+                btnWeekly.classList.add('active');
+                btnMonthly.classList.remove('active');
+                viewWeekly.style.display = 'block';
+                viewMonthly.style.display = 'none';
+            } else {
+                btnMonthly.classList.add('active');
+                btnWeekly.classList.remove('active');
+                viewMonthly.style.display = 'block';
+                viewWeekly.style.display = 'none';
             }
         }
+
+        // ── Restore Session on Load ──
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('cruz_session');
+            if (saved) {
+                try {
+                    const session = JSON.parse(saved);
+                    if (session.parent_id && session.players && session.players.length > 0) {
+                        initDashboard(session.parent_id, session.players);
+                        return;
+                    }
+                } catch (e) {}
+            }
+            // Not logged in—show login form
+            document.getElementById('loginScreen').style.display = 'flex';
+        });
         
-        // PWA Service Worker Registration
+        // ── PWA Service Worker ──
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(reg => {
-                    console.log('SW registered!', reg);
-                }).catch(err => console.log('SW registration failed', err));
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered', reg.scope))
+                    .catch(err => console.log('SW failed', err));
             });
         }
     </script>
