@@ -201,7 +201,7 @@
             <div class="team-card glass fade-up">
                 <div class="team-media-container">
                     <img src="assets/cruz.jpg" alt="Coach Cruz" class="team-photo">
-                    <video src="assets/cruz.MOV" class="team-video" muted loop playsinline></video>
+                    <iframe src="https://www.youtube.com/embed/hiuJU5lkQLg?si=UNbvRAvptI_JBDLx&autoplay=1&mute=1&loop=1&playlist=hiuJU5lkQLg&controls=0&showinfo=0&rel=0" class="team-video" style="pointer-events: none; border: none; transform: scale(3) translateY(5%);" allow="autoplay; fullscreen"></iframe>
                 </div>
                 <div class="team-info">
                     <h3>Coach Cruz</h3>
@@ -250,7 +250,7 @@
         // Highlight Video Hover Logic
         document.querySelectorAll('.team-card').forEach(card => {
             const video = card.querySelector('.team-video');
-            if (video) {
+            if (video && video.tagName === 'VIDEO') {
                 card.addEventListener('mouseenter', () => video.play().catch(e => {}));
                 card.addEventListener('mouseleave', () => video.pause());
             }
