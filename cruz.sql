@@ -9,6 +9,9 @@ CREATE TABLE parents (
                         email TEXT UNIQUE,
                         password TEXT);
 INSERT INTO parents VALUES(1,'parent@example.com','password123');
+INSERT INTO parents VALUES(2,'luke@lukewade.net','lukewade');
+INSERT INTO parents VALUES(3,'cruz@lukewade.net','cruz');
+INSERT INTO parents VALUES(4,'lee@lukewade.net','lee');
 CREATE TABLE players (
                         id INTEGER PRIMARY KEY,
                         parent_id INTEGER,
@@ -17,11 +20,11 @@ CREATE TABLE players (
                         initials TEXT,
                         group_name TEXT,
                         FOREIGN KEY(parent_id) REFERENCES parents(id));
-INSERT INTO players VALUES(1,1,'Liam','Smith','LS','U11-U12 Elite');
-INSERT INTO players VALUES(2,NULL,'Jackson','C','JC','U11-U12 Elite');
-INSERT INTO players VALUES(3,NULL,'Mateo','R','MR','U11-U12 Elite');
-INSERT INTO players VALUES(4,NULL,'Ethan','W','EW','U11-U12 Elite');
-INSERT INTO players VALUES(5,1,'Noah','Smith','NS','U13 Mastery Clinic');
+INSERT INTO players VALUES(1,2,'Liam','Smith','LS','U11-U12 Elite');
+INSERT INTO players VALUES(2,2,'Jackson','C','JC','U11-U12 Elite');
+INSERT INTO players VALUES(3,3,'Mateo','R','MR','U11-U12 Elite');
+INSERT INTO players VALUES(4,4,'Ethan','W','EW','U11-U12 Elite');
+INSERT INTO players VALUES(5,3,'Noah','Smith','NS','U13 Mastery Clinic');
 CREATE TABLE sessions (
                         id INTEGER PRIMARY KEY,
                         group_name TEXT,
