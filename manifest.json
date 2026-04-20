@@ -1,0 +1,17 @@
+{
+  "name": "Cruz Coaching Parent Portal",
+  "short_name": "Cruz Portal",
+  "description": "Manage your player's schedule and attendance.",
+  "start_url": "/portal.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#B026FF",
+  "icons": [
+    {
+      "src": "./assets/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
