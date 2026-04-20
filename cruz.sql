@@ -1,5 +1,9 @@
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
+
+DROP TABLE IF EXISTS attendance;
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS players;
+DROP TABLE IF EXISTS parents;
+
 CREATE TABLE parents (
                         id INTEGER PRIMARY KEY,
                         email TEXT UNIQUE,
@@ -39,4 +43,3 @@ INSERT INTO attendance VALUES(1,101,1,1);
 INSERT INTO attendance VALUES(2,101,2,1);
 INSERT INTO attendance VALUES(3,101,3,1);
 INSERT INTO attendance VALUES(4,101,4,0);
-COMMIT;
