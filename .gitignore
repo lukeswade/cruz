@@ -1,0 +1,13 @@
+# Python artifacts
+__pycache__/
+*.pyc
+
+# Local Python Server Logs
+server.pid
+server.log
+
+# Database
+cruz.db
+
+# OS specific files
+.DS_Store
