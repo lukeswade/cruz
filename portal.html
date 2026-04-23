@@ -849,9 +849,10 @@
                 });
 
                 mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    // WebM is often the default on Chrome/Firefox. Cloudflare Whisper handles webm/ogg/mp3 well.
-                    processVoiceFeedback(audioBlob);
+                    const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
+                    const ext = mediaRecorder.mimeType.includes("mp4") ? "m4a" : "webm";
+                    const fileObj = new File([audioBlob], "recording." + ext, { type: mediaRecorder.mimeType });
+                    processVoiceFeedback(fileObj);
                     
                     // Cleanup tracks
                     stream.getTracks().forEach(track => track.stop());
@@ -877,7 +878,7 @@
 
             try {
                 const formData = new FormData();
-                formData.append('audio', blob, 'recording.webm');
+                formData.append('audio', blob);
                 formData.append('player_id', currentPlayer.id);
 
                 const res = await fetch('/api/feedback', {
@@ -894,10 +895,10 @@
                     // Auto-refresh dashboard to show the new plan 
                     await loadDashboard();
                 } else {
-                    outputBox.innerHTML = '<span style="color: #f44336;">Error generating feedback.</span>';
+                    outputBox.innerHTML = '<span style="color: #f44336;">Error generating feedback: ' + (data.error || 'Server error') + '</span>';
                 }
             } catch (err) {
-                outputBox.innerHTML = '<span style="color: #f44336;">Network error generating feedback.</span>';
+                outputBox.innerHTML = '<span style="color: #f44336;">Network error generating feedback: ' + err.message + '</span>';
             }
             hideLoading();
         }

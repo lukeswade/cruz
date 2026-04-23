@@ -10,11 +10,10 @@ export async function onRequestPost(context) {
         }
 
         const audioBuffer = await audioFile.arrayBuffer();
-        const uint8Array = new Uint8Array(audioBuffer);
         
         // 1. Transcribe
         const transcriptRes = await env.AI.run("@cf/openai/whisper", {
-            audio: [...uint8Array]
+            audio: Array.from(new Uint8Array(audioBuffer))
         });
         const text = transcriptRes.text;
 
