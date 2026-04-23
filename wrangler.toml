@@ -5,3 +5,6 @@ compatibility_date = "2026-04-20"
 binding = "DB" # This matches the `env.DB` referenced in your functions!
 database_name = "cruz-portal-db"
 database_id = "9342eccd-efd6-4527-929e-8f623ae73fd5"
+
+[ai]
+binding = "AI"

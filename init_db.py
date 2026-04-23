@@ -23,6 +23,7 @@ def init_db():
                         lastname TEXT,
                         initials TEXT,
                         group_name TEXT,
+                        photo_b64 TEXT,
                         FOREIGN KEY(parent_id) REFERENCES parents(id))''')
                         
     cursor.execute('''CREATE TABLE IF NOT EXISTS sessions (
@@ -47,11 +48,11 @@ def init_db():
     cursor.execute("INSERT INTO parents (id, email, password) VALUES (4, 'lee@lukewade.net', 'lee')")
     
     # Players (Now linked to specific POC accounts)
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (1, 2, 'Liam', 'Smith', 'LS', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (2, 2, 'Jackson', 'C', 'JC', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (3, 3, 'Mateo', 'R', 'MR', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (4, 4, 'Ethan', 'W', 'EW', 'U11-U12 Elite')")
-    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name) VALUES (5, 3, 'Noah', 'Smith', 'NS', 'U13 Mastery Clinic')")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64) VALUES (1, 2, 'Liam', 'Smith', 'LS', 'U11-U12 Elite', NULL)")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64) VALUES (2, 2, 'Jackson', 'C', 'JC', 'U11-U12 Elite', NULL)")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64) VALUES (3, 3, 'Mateo', 'R', 'MR', 'U11-U12 Elite', NULL)")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64) VALUES (4, 4, 'Ethan', 'W', 'EW', 'U11-U12 Elite', NULL)")
+    cursor.execute("INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64) VALUES (5, 3, 'Noah', 'Smith', 'NS', 'U13 Mastery Clinic', NULL)")
     
     # Sessions
     cursor.execute("INSERT INTO sessions (id, group_name, date, time_str) VALUES (101, 'U11-U12 Elite', '2026-04-20', 'Spirit Park • 5:00 PM - 6:00 PM')")

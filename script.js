@@ -20,7 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.classList.toggle('active');
         });
     }
-    // Smooth scroll + auto-close mobile menu — single unified handler
+    // Close mobile menu on ANY link click inside nav
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (navLinks) navLinks.classList.remove('active');
+        });
+    });
+
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
@@ -28,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                if (navLinks) navLinks.classList.remove('active');
                 const offset = navbar ? navbar.offsetHeight + 10 : 0;
                 const top = target.getBoundingClientRect().top + window.scrollY - offset;
                 window.scrollTo({ top, behavior: 'smooth' });
@@ -45,21 +51,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-up, .fade-left').forEach(el => observer.observe(el));
-    // Subscription gating for Sign-Up section
-    const signupContainer = document.getElementById('signup-container');
-    const subscribePrompt = document.getElementById('subscribe-prompt');
-    if (signupContainer && subscribePrompt) {
-        const hasSubscription = localStorage.getItem('hasSubscription') === 'true';
-        if (hasSubscription) {
-            signupContainer.style.display = 'block';
-            subscribePrompt.style.display = 'none';
-        } else {
-            signupContainer.style.display = 'none';
-            subscribePrompt.style.display = 'block';
-        }
-    }
+
     // Instagram Feed
     loadInstagramFeed();
+
+    // AI Chat Widget
+    const chatToggle = document.getElementById('ai-chat-toggle');
+    const chatPanel = document.getElementById('ai-chat-panel');
+    const chatClose = document.getElementById('ai-chat-close');
+    const chatForm = document.getElementById('ai-chat-form');
+    const chatInput = document.getElementById('ai-chat-input');
+    const chatMessages = document.getElementById('ai-chat-messages');
+
+    if (chatToggle && chatPanel) {
+        chatToggle.addEventListener('click', () => {
+            chatPanel.style.display = chatPanel.style.display === 'none' ? 'flex' : 'none';
+        });
+        chatClose.addEventListener('click', () => {
+            chatPanel.style.display = 'none';
+        });
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if(!text) return;
+            
+            // Add user message
+            const userBox = document.createElement('div');
+            userBox.style = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; border-bottom-right-radius: 2px; align-self: flex-end; max-width: 85%; color: var(--text-primary);";
+            userBox.textContent = text;
+            chatMessages.appendChild(userBox);
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Loading dot
+            const loadBox = document.createElement('div');
+            loadBox.style = "background: rgba(176,38,255,0.1); padding: 10px; border-radius: 8px; border-bottom-left-radius: 2px; max-width: 85%; color: var(--text-secondary);";
+            loadBox.textContent = "Typing...";
+            chatMessages.appendChild(loadBox);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                
+                chatMessages.removeChild(loadBox);
+                const replyBox = document.createElement('div');
+                replyBox.style = "background: rgba(176,38,255,0.1); border: 1px solid rgba(176,38,255,0.2); padding: 10px; border-radius: 8px; border-bottom-left-radius: 2px; max-width: 85%; color: var(--text-primary);";
+                replyBox.textContent = data.reply || "Sorry, I'm having trouble thinking right now.";
+                chatMessages.appendChild(replyBox);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (err) {
+                chatMessages.removeChild(loadBox);
+            }
+        });
+    }
 });
 
 async function loadInstagramFeed() {

@@ -1,8 +1,9 @@
-const CACHE_NAME = 'cruz-portal-v8';
+const CACHE_NAME = 'cruz-portal-v15';
 const STATIC_ASSETS = [
     '/',
     '/portal',
     '/style.css',
+    '/script.js',
     '/assets/icon.png',
     '/assets/icon-192.png',
     '/assets/icon-512.png',
@@ -39,7 +40,7 @@ self.addEventListener('fetch', (e) => {
     
     // For everything else: cache-first, fallback to network
     e.respondWith(
-        caches.match(e.request).then(cached => {
+        caches.match(e.request, { ignoreSearch: true }).then(cached => {
             return cached || fetch(e.request).then(response => {
                 // Cache successful GET responses
                 if (response.ok && e.request.method === 'GET') {

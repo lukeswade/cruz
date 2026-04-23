@@ -350,38 +350,6 @@
         .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; margin-left: auto; flex-shrink: 0; }
         .status-out { background: #f44336; }
 
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid var(--glass-border);
-            padding: 0.8rem 0;
-            padding-bottom: max(0.8rem, env(safe-area-inset-bottom));
-            z-index: 100;
-        }
-        .nav-item {
-            flex: 1;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.7rem;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.2s;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .nav-item .nav-icon { font-size: 1.2rem; }
-        .nav-item.active { color: var(--accent); }
 
         .empty-state {
             padding: 3rem 1rem;
@@ -425,7 +393,7 @@
     <div class="app-container">
         <!-- Header -->
         <div class="app-header">
-            <a href="index.html" style="color: var(--text-primary); text-decoration: none; font-size: 1.1rem;">&larr;</a>
+            <a href="/" style="color: var(--text-primary); text-decoration: none; font-size: 1.1rem;">&larr;</a>
             <div class="app-title">
                 <span class="brand-cruz">Cruz</span>
                 <span class="brand-coaching">Coaching</span>
@@ -443,15 +411,17 @@
             <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; margin-bottom: 0.3rem; text-align: center;">Parent Portal</h2>
             <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; text-align: center;">Manage schedule and attendance</p>
             
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
-            </div>
-            <div class="input-group">
-                <label for="pass">Password</label>
-                <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
-            </div>
-            <button class="login-btn" onclick="doLogin()">Log In</button>
+            <form onsubmit="event.preventDefault(); doLogin();">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <label for="pass">Password</label>
+                    <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
             <p id="loginError" style="color: #f44336; text-align: center; margin-top: 1rem; font-size: 0.85rem; display: none;"></p>
         </div>
 
@@ -467,7 +437,11 @@
             <!-- Calendar Widget -->
             <div class="calendar-widget">
                 <div class="calendar-header">
-                    <div class="calendar-month" id="calendarMonthLabel">April 2026</div>
+                    <div class="calendar-month" style="display:flex; align-items:center; gap: 8px;">
+                        <button onclick="prevPeriod()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px;">&larr;</button>
+                        <span id="calendarMonthLabel">April 2026</span>
+                        <button onclick="nextPeriod()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px;">&rarr;</button>
+                    </div>
                     <div class="calendar-toggle-group">
                         <button class="cal-toggle-btn active" id="btn-weekly" onclick="toggleCalendar('weekly')">Week</button>
                         <button class="cal-toggle-btn" id="btn-monthly" onclick="toggleCalendar('monthly')">Month</button>
@@ -493,10 +467,19 @@
                 </div>
             </div>
 
-            <!-- Player Dropdown -->
-            <div class="group-select-container">
-                <select class="group-select" id="groupSelect" onchange="changePlayer()">
-                </select>
+            <!-- Player Dropdown & Avatar -->
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="position: relative; flex-shrink: 0;">
+                    <div id="ui-current-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: rgba(176, 38, 255, 0.1); border: 1px solid rgba(176, 38, 255, 0.2); display: flex; align-items: center; justify-content: center; font-weight: 500; color: var(--accent); font-size: 1.1rem; overflow: hidden; cursor: pointer;" onclick="document.getElementById('avatarUploadInput').click()">
+                        <!-- Avatar Content -->
+                    </div>
+                    <input type="file" id="avatarUploadInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
+                    <div style="position: absolute; bottom: -2px; right: -2px; background: var(--bg-secondary); border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; border: 1px solid var(--glass-border); pointer-events: none; color: var(--text-secondary);">+</div>
+                </div>
+                <div style="flex: 1;">
+                    <select class="group-select" id="groupSelect" onchange="changePlayer()" style="margin-bottom: 0;">
+                    </select>
+                </div>
             </div>
 
             <!-- Session Details -->
@@ -521,6 +504,20 @@
                     <h4 id="ui-roster-count">Attending</h4>
                     <ul class="roster-list" id="rosterList"></ul>
                 </div>
+
+                <!-- Coach Tools (Hidden by default) -->
+                <div id="coach-tools-section" style="display: none; margin-top: 2rem; background: rgba(176,38,255,0.05); border: 1px solid rgba(176,38,255,0.2); border-radius: 12px; padding: 1.2rem;">
+                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; display:flex; align-items:center; gap:6px;"><span>🎙️</span> AI Coach Feedback</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Record raw voice feedback to auto-generate a structured practice plan for this player.</p>
+                    <input type="file" id="audioUploadInput" accept="audio/*" capture="microphone" style="display:none;" onchange="handleVoiceFeedback(event)">
+                    <button onclick="document.getElementById('audioUploadInput').click()" style="width: 100%; background: var(--bg-primary); border: 1px solid var(--accent); color: var(--text-primary); padding: 0.8rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 500;">
+                        Tap to Record Audio
+                    </button>
+                    <div style="margin-top: 0.8rem; padding: 0.8rem; background: rgba(0,0,0,0.2); border-radius: 6px; border-left: 2px solid var(--accent);">
+                        <p style="font-size: 0.75rem; color: #ccc; margin: 0; line-height: 1.4;"><strong>How to use this:</strong> Just speak your raw thoughts after a session. For example:<br><em>"Liam did great with his left foot today but was too passive on defense. Next week we need to focus on his 1v1 aggression and shooting mechanics."</em><br>The AI will automatically write a clean checklist for you.</p>
+                    </div>
+                    <div id="ai-plan-output" style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-primary); white-space: pre-wrap; background: var(--bg-primary); padding: 1rem; border-radius: 8px; display: none; border: 1px solid var(--glass-border);"></div>
+                </div>
             </div>
             
             <div id="noSessionMessage" class="empty-state" style="display: none;">
@@ -538,6 +535,7 @@
         let players = [];
         let currentPlayer = null;
         let currentSession = null;
+        let currentView = 'weekly';
         
         // Use today's actual date
         const now = new Date();
@@ -563,6 +561,46 @@
             return dates;
         }
 
+        function prevPeriod() {
+            if (currentView === 'weekly') {
+                let d = new Date(activeDate + 'T12:00:00');
+                d.setDate(d.getDate() - 7);
+                activeDate = formatDateStr(d.getFullYear(), d.getMonth(), d.getDate());
+                activeMonth = d.getMonth();
+                activeYear = d.getFullYear();
+            } else {
+                activeMonth--;
+                if(activeMonth < 0) { activeMonth = 11; activeYear--; }
+                let maxDays = new Date(activeYear, activeMonth + 1, 0).getDate();
+                let day = parseInt(activeDate.split('-')[2]);
+                if (day > maxDays) day = maxDays;
+                activeDate = formatDateStr(activeYear, activeMonth, day);
+            }
+            buildWeeklyGrid();
+            buildMonthlyGrid();
+            loadDashboard();
+        }
+
+        function nextPeriod() {
+            if (currentView === 'weekly') {
+                let d = new Date(activeDate + 'T12:00:00');
+                d.setDate(d.getDate() + 7);
+                activeDate = formatDateStr(d.getFullYear(), d.getMonth(), d.getDate());
+                activeMonth = d.getMonth();
+                activeYear = d.getFullYear();
+            } else {
+                activeMonth++;
+                if(activeMonth > 11) { activeMonth = 0; activeYear++; }
+                let maxDays = new Date(activeYear, activeMonth + 1, 0).getDate();
+                let day = parseInt(activeDate.split('-')[2]);
+                if (day > maxDays) day = maxDays;
+                activeDate = formatDateStr(activeYear, activeMonth, day);
+            }
+            buildWeeklyGrid();
+            buildMonthlyGrid();
+            loadDashboard();
+        }
+
         // ── Calendar Builders ──
         const sessionDays = [20, 22, 24]; // mock session indicators
 
@@ -578,7 +616,7 @@
                 let cls = 'cal-date';
                 if (dateStr === activeDate) cls += ' active';
                 if (dateStr === todayStr) cls += ' today';
-                if (sessionDays.includes(dayNum) && month === 4) cls += ' has-session';
+                if (sessionDays.includes(dayNum)) cls += ' has-session';
                 
                 grid.innerHTML += `<div class="cal-date-container"><div class="${cls}" data-date="${dateStr}" onclick="selectDate(this)">${dayNum}</div></div>`;
             });
@@ -599,7 +637,7 @@
                 let cls = 'cal-date';
                 if (dateStr === activeDate) cls += ' active';
                 if (dateStr === todayStr) cls += ' today';
-                if (sessionDays.includes(i) && activeMonth === 3) cls += ' has-session';
+                if (sessionDays.includes(i)) cls += ' has-session';
                 grid.innerHTML += `<div class="cal-date-container"><div class="${cls}" data-date="${dateStr}" onclick="selectDate(this)">${i}</div></div>`;
             }
             
@@ -640,7 +678,7 @@
                         players: data.players,
                         email: email
                     }));
-                    initDashboard(data.parent_id, data.players);
+                    initDashboard(data.parent_id, data.players, email);
                 } else {
                     errEl.textContent = 'Invalid email or password.';
                     errEl.style.display = 'block';
@@ -667,9 +705,20 @@
             document.getElementById('pass').value = '';
         }
 
-        function initDashboard(parentId, playersList) {
+        let currentUserEmail = null;
+
+        function initDashboard(parentId, playersList, email) {
             currentParentId = parentId;
             players = playersList;
+            currentUserEmail = email;
+
+            // Show Coach Box if email is Cruz, Lee, or Luke
+            const coachEmails = ['cruz@lukewade.net', 'lee@lukewade.net', 'luke@lukewade.net'];
+            if (coachEmails.includes(currentUserEmail)) {
+                document.getElementById('coach-tools-section').style.display = 'block';
+            } else {
+                document.getElementById('coach-tools-section').style.display = 'none';
+            }
 
             // Populate dropdown
             const select = document.getElementById('groupSelect');
@@ -682,6 +731,7 @@
             });
             
             currentPlayer = players[0];
+            updateAvatarUI();
 
             // Welcome text
             document.getElementById('welcomeText').textContent = `Welcome, ${players[0].firstname}'s family`;
@@ -701,7 +751,102 @@
         async function changePlayer() {
             const p_id = parseInt(document.getElementById('groupSelect').value);
             currentPlayer = players.find(p => p.id === p_id);
+            updateAvatarUI();
             await loadDashboard();
+        }
+
+        function updateAvatarUI() {
+            const avatarBox = document.getElementById('ui-current-avatar');
+            if (currentPlayer && currentPlayer.photo_b64) {
+                avatarBox.innerHTML = `<img src="${currentPlayer.photo_b64}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            } else if (currentPlayer) {
+                avatarBox.innerHTML = currentPlayer.initials;
+            }
+        }
+
+        async function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file || !currentPlayer) return;
+
+            showLoading();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('styled_2d') || canvas.getContext('2d');
+                    
+                    // Box Crop 150x150
+                    const size = 150;
+                    canvas.width = size;
+                    canvas.height = size;
+                    
+                    const ratio = Math.max(size / img.width, size / img.height);
+                    const drawW = img.width * ratio;
+                    const drawH = img.height * ratio;
+                    const drawX = (size - drawW) / 2;
+                    const drawY = (size - drawH) / 2;
+                    
+                    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+                    const base64Str = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    currentPlayer.photo_b64 = base64Str;
+                    updateAvatarUI();
+                    
+                    try {
+                        await fetch('/api/upload_avatar', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ player_id: currentPlayer.id, b64: base64Str })
+                        });
+                        // Also persist to local session so it doesn't revert on reload before server sync
+                        let sessionJSON = localStorage.getItem('cruz_session');
+                        if (sessionJSON) {
+                            let session = JSON.parse(sessionJSON);
+                            let targetP = session.players.find(p => p.id === currentPlayer.id);
+                            if (targetP) { targetP.photo_b64 = base64Str; }
+                            localStorage.setItem('cruz_session', JSON.stringify(session));
+                        }
+                    } catch(err) {
+                        console.error('Avatar upload failed', err);
+                    }
+                    hideLoading();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleVoiceFeedback(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showLoading();
+            const outputBox = document.getElementById('ai-plan-output');
+            outputBox.style.display = 'block';
+            outputBox.innerHTML = '<i>Transcribing and Generating Plan...</i>';
+
+            try {
+                const formData = new FormData();
+                formData.append('audio', file);
+
+                const res = await fetch('/api/feedback', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    outputBox.innerHTML = '<strong>Transcript:</strong><br>' + data.transcript + '<br><br><strong>Practice Plan:</strong><br>' + data.plan;
+                } else {
+                    outputBox.innerHTML = '<span style="color: #f44336;">Error generating feedback.</span>';
+                }
+            } catch (err) {
+                outputBox.innerHTML = '<span style="color: #f44336;">Network error generating feedback.</span>';
+            }
+            hideLoading();
+            // Reset input so it can be clicked again
+            event.target.value = '';
         }
 
         async function selectDate(el) {
@@ -745,10 +890,12 @@
                         const avatarColor = !p.is_attending ? 'style="color: #f44336; background: rgba(244,67,54,0.1); border-color: rgba(244,67,54,0.2);"' : '';
                         const nameStyle = !p.is_attending ? 'style="color: var(--text-secondary);"' : '';
                         const indClass = p.is_attending ? 'status-indicator' : 'status-indicator status-out';
-                        const nameStr = `${p.firstname} ${p.lastname.charAt(0)}.` + (!p.is_attending ? ' (Out)' : '');
+                        const nameStr = `${p.firstname} ${p.lastname.charAt(0)}.`;
+                        
+                        let avatarContent = p.photo_b64 ? `<img src="${p.photo_b64}" style="width: 100%; height: 100%; object-fit: cover;">` : p.initials;
                         
                         li.innerHTML = `
-                            <div class="avatar" ${avatarColor}>${p.initials}</div>
+                            <div class="avatar" ${avatarColor} style="overflow: hidden;">${avatarContent}</div>
                             <div class="roster-name" ${nameStyle}>${nameStr}</div>
                             <div class="${indClass}"></div>
                         `;
@@ -793,6 +940,7 @@
         }
 
         function toggleCalendar(view) {
+            currentView = view;
             const btnWeekly = document.getElementById('btn-weekly');
             const btnMonthly = document.getElementById('btn-monthly');
             const viewWeekly = document.getElementById('weekly-view');
@@ -818,7 +966,7 @@
                 try {
                     const session = JSON.parse(saved);
                     if (session.parent_id && session.players && session.players.length > 0) {
-                        initDashboard(session.parent_id, session.players);
+                        initDashboard(session.parent_id, session.players, session.email);
                         return;
                     }
                 } catch (e) {}
