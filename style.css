@@ -603,16 +603,15 @@ body.dark-theme {
 }
 .team-card:hover .team-photo {
     transform: scale(1.05);
+}
+.team-card.has-video:hover .team-photo {
     opacity: 0;
 }
 .team-video {
     opacity: 0;
 }
-.team-card:hover .team-video {
+.team-card.has-video:hover .team-video {
     opacity: 1;
-}
-.team-card:hover .team-photo {
-    opacity: 0;
 }
 .team-info {
     padding: 2rem;
