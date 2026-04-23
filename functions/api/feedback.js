@@ -20,6 +20,7 @@ export async function onRequestPost(context) {
 
         // 2. Generate Plan
         const prompt = `You are an elite soccer coach assistant. Rewrite the following voice feedback into a structured at-home practice plan with clear, actionable bullet points for the player to work on independently. Provide 'Observations' and a brief 'At-Home Practice Plan' checklist. Do not suggest on-site pre-session warmups.
+CRITICAL: For every specific drill you suggest in the practice plan, you MUST include a clickable YouTube search link so the player can watch instructional examples. Format exactly like this: [Watch Examples](https://www.youtube.com/results?search_query=Soccer+Drill+Name)
 Feedback: "${text}"`;
 
         const llmRes = await env.AI.run("@cf/meta/llama-3-8b-instruct", {
