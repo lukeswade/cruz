@@ -141,7 +141,6 @@
             flex: 1;
             padding: 1.5rem;
             overflow-y: auto;
-            padding-bottom: 90px;
         }
 
         /* Welcome Banner */
@@ -530,21 +529,7 @@
             </div>
         </div>
 
-        <!-- Bottom Nav -->
-        <div class="bottom-nav" id="bottomNav" style="display: none;">
-            <a href="#" class="nav-item active" onclick="return false;">
-                <span class="nav-icon">📅</span>
-                Schedule
-            </a>
-            <a href="#" class="nav-item" onclick="return false;">
-                <span class="nav-icon">📊</span>
-                Progress
-            </a>
-            <a href="#" class="nav-item" onclick="return false;">
-                <span class="nav-icon">💳</span>
-                Billing
-            </a>
-        </div>
+
     </div>
 
     <script>
@@ -676,7 +661,6 @@
             
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('dashboardScreen').style.display = 'none';
-            document.getElementById('bottomNav').style.display = 'none';
             document.getElementById('logoutBtn').style.display = 'none';
             document.getElementById('headerSpacer').style.display = 'block';
             document.getElementById('email').value = '';
@@ -705,7 +689,6 @@
             // Show dashboard
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboardScreen').style.display = 'block';
-            document.getElementById('bottomNav').style.display = 'flex';
             document.getElementById('logoutBtn').style.display = 'block';
             document.getElementById('headerSpacer').style.display = 'none';
 
