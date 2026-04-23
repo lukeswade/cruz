@@ -19,14 +19,24 @@ export async function onRequestPost(context) {
         const text = transcriptRes.text;
 
         // 2. Generate Plan
-        const prompt = `You are an elite soccer coach assistant. Rewrite the following voice feedback into a structured practice plan with clear, actionable bullet points. Provide 'Observations' and a brief 'Practice Plan' checklist.
+        const prompt = `You are an elite soccer coach assistant. Rewrite the following voice feedback into a structured at-home practice plan with clear, actionable bullet points for the player to work on independently. Provide 'Observations' and a brief 'At-Home Practice Plan' checklist. Do not suggest on-site pre-session warmups.
 Feedback: "${text}"`;
 
         const llmRes = await env.AI.run("@cf/meta/llama-3-8b-instruct", {
             messages: [{ role: "user", content: prompt }]
         });
+        
+        const plan = llmRes.response;
 
-        return Response.json({ success: true, transcript: text, plan: llmRes.response });
+        // 3. Save to database
+        const playerId = formData.get("player_id");
+        if (playerId) {
+            await env.DB.prepare(
+                `UPDATE players SET latest_plan = ? WHERE id = ?`
+            ).bind(plan, parseInt(playerId)).run();
+        }
+
+        return Response.json({ success: true, transcript: text, plan: plan });
     } catch (e) {
         return Response.json({ success: false, error: e.message }, { status: 500 });
     }

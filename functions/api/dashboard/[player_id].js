@@ -19,9 +19,9 @@ export async function onRequestGet(context) {
 
         // Fetch roster and attendance
         const { results: roster } = await env.DB.prepare(
-            `SELECT p.id, p.firstname, p.lastname, p.initials, p.photo_b64,
+            `SELECT p.id, p.firstname, p.lastname, p.initials, p.photo_b64, p.latest_plan,
                     COALESCE(a.is_attending, 0) as is_attending 
-             FROM players p 
+             FROM players p  
              LEFT JOIN attendance a ON a.player_id = p.id AND a.session_id = ?
              WHERE p.group_name = ?`
         ).bind(session.id, player.group_name).all();

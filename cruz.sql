@@ -20,12 +20,13 @@ CREATE TABLE players (
                         initials TEXT,
                         group_name TEXT,
                         photo_b64 TEXT,
+                        latest_plan TEXT,
                         FOREIGN KEY(parent_id) REFERENCES parents(id));
-INSERT INTO players VALUES(1,2,'Liam','Smith','LS','U11-U12 Elite', NULL);
-INSERT INTO players VALUES(2,2,'Jackson','C','JC','U11-U12 Elite', NULL);
-INSERT INTO players VALUES(3,3,'Mateo','R','MR','U11-U12 Elite', NULL);
-INSERT INTO players VALUES(4,4,'Ethan','W','EW','U11-U12 Elite', NULL);
-INSERT INTO players VALUES(5,3,'Noah','Smith','NS','U13 Mastery Clinic', NULL);
+INSERT INTO players VALUES(1,2,'Liam','Smith','LS','U11-U12 Elite', NULL, NULL);
+INSERT INTO players VALUES(2,2,'Jackson','C','JC','U11-U12 Elite', NULL, NULL);
+INSERT INTO players VALUES(3,3,'Mateo','R','MR','U11-U12 Elite', NULL, NULL);
+INSERT INTO players VALUES(4,4,'Ethan','W','EW','U11-U12 Elite', NULL, NULL);
+INSERT INTO players VALUES(5,3,'Noah','Smith','NS','U13 Mastery Clinic', NULL, NULL);
 CREATE TABLE sessions (
                         id INTEGER PRIMARY KEY,
                         group_name TEXT,

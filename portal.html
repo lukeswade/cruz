@@ -500,14 +500,20 @@
                     </label>
                 </div>
 
-                <div class="roster-section">
+                <!-- Latest Coach Feedback -->
+                <div id="parent-feedback-section" style="display: none; margin-top: 1.5rem; background: var(--glass-bg); border: 1px solid var(--accent); border-radius: 12px; padding: 1.2rem;">
+                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Coach Action Plan</h4>
+                    <div id="ui-latest-plan" style="font-size: 0.85rem; color: var(--text-primary); white-space: pre-wrap; margin-top: 0.5rem; line-height: 1.5;"></div>
+                </div>
+
+                <div class="roster-section" style="margin-top: 2rem;">
                     <h4 id="ui-roster-count">Attending</h4>
                     <ul class="roster-list" id="rosterList"></ul>
                 </div>
 
                 <!-- Coach Tools (Hidden by default) -->
                 <div id="coach-tools-section" style="display: none; margin-top: 2rem; background: rgba(176,38,255,0.05); border: 1px solid rgba(176,38,255,0.2); border-radius: 12px; padding: 1.2rem;">
-                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; display:flex; align-items:center; gap:6px;"><span>🎙️</span> AI Coach Feedback</h4>
+                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; display:flex; align-items:center;">AI Coach Feedback</h4>
                     <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Record raw voice feedback to auto-generate a structured practice plan for this player.</p>
                     <input type="file" id="audioUploadInput" accept="audio/*" capture="microphone" style="display:none;" onchange="handleVoiceFeedback(event)">
                     <button onclick="document.getElementById('audioUploadInput').click()" style="width: 100%; background: var(--bg-primary); border: 1px solid var(--accent); color: var(--text-primary); padding: 0.8rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 500;">
@@ -829,6 +835,7 @@
             try {
                 const formData = new FormData();
                 formData.append('audio', file);
+                formData.append('player_id', currentPlayer.id);
 
                 const res = await fetch('/api/feedback', {
                     method: 'POST',
@@ -837,7 +844,9 @@
                 const data = await res.json();
                 
                 if (data.success) {
-                    outputBox.innerHTML = '<strong>Transcript:</strong><br>' + data.transcript + '<br><br><strong>Practice Plan:</strong><br>' + data.plan;
+                    outputBox.innerHTML = '<strong>Transcript:</strong><br>' + data.transcript + '<br><br><strong>Practice Plan Saved to Session:</strong><br>' + data.plan;
+                    // Auto-refresh dashboard to show the new plan 
+                    await loadDashboard();
                 } else {
                     outputBox.innerHTML = '<span style="color: #f44336;">Error generating feedback.</span>';
                 }
@@ -894,6 +903,7 @@
                         
                         let avatarContent = p.photo_b64 ? `<img src="${p.photo_b64}" style="width: 100%; height: 100%; object-fit: cover;">` : p.initials;
                         
+                        
                         li.innerHTML = `
                             <div class="avatar" ${avatarColor} style="overflow: hidden;">${avatarContent}</div>
                             <div class="roster-name" ${nameStyle}>${nameStr}</div>
@@ -901,6 +911,17 @@
                         `;
                         list.appendChild(li);
                     });
+                    
+                    // Display latest player feedback block for parents
+                    const feedbackSection = document.getElementById('parent-feedback-section');
+                    const planOutput = document.getElementById('ui-latest-plan');
+                    if (data.player.latest_plan) {
+                        feedbackSection.style.display = 'block';
+                        planOutput.innerHTML = data.player.latest_plan;
+                    } else {
+                        feedbackSection.style.display = 'none';
+                    }
+
                 } else {
                     document.getElementById('sessionContentWrapper').style.display = 'none';
                     document.getElementById('noSessionMessage').style.display = 'block';
