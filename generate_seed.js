@@ -46,7 +46,7 @@ while (current <= end) {
         sql += `INSERT INTO sessions (id, group_name, date, time_str) VALUES (${session_id}, 'Development', '${dateStr}', '6:00 PM');\n`;
 
         for (const p of players) {
-            // 80% chance attending, but Colt & Charlie attend 90%
+            // Colt & Charlie: 40% attendance, everyone else: 9%
             const rate = (p.id <= 2) ? 0.4 : 0.09;
             const is_att = Math.random() < rate ? 1 : 0;
             sql += `INSERT INTO attendance (session_id, player_id, is_attending) VALUES (${session_id}, ${p.id}, ${is_att});\n`;

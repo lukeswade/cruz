@@ -202,7 +202,7 @@
             updateAvatarUI();
 
             // Welcome text
-            document.getElementById('welcomeText').textContent = `Welcome, ${players[0].firstname}'s family`;
+            document.getElementById('welcomeText').textContent = `Welcome, ${players[0].lastname} family`;
 
             // Show dashboard
             document.getElementById('loginScreen').style.display = 'none';
@@ -398,7 +398,7 @@
                     if (opt) opt.textContent = `${fresh.firstname} ${fresh.lastname} – ${fresh.group_name}`;
 
                     // Update welcome text with the first player's live name
-                    document.getElementById('welcomeText').textContent = `Welcome, ${players[0].firstname}'s family`;
+                    document.getElementById('welcomeText').textContent = `Welcome, ${players[0].lastname} family`;
 
                     updateAvatarUI();
                     updateAttendanceText(data.my_attendance);
@@ -421,13 +421,13 @@
                     document.getElementById('attendanceToggle').checked = data.my_attendance;
                     updateAttendanceText(data.my_attendance);
                     
-                    document.getElementById('ui-roster-count').textContent = `Attending ${data.attending_count}/${data.total_count}`;
+                    document.getElementById('ui-roster-count').textContent = `${data.attending_count} Attending`;
                     
                     const list = document.getElementById('rosterList');
                     list.innerHTML = '';
                     
                     data.roster.forEach(p => {
-                        if (p.is_me && !data.my_attendance) return;
+                        if (!p.is_attending) return;
                         const li = document.createElement('li');
                         li.className = 'roster-item';
                         
