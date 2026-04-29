@@ -25,12 +25,8 @@ const players = [
 
 for(let i=0; i<4; i++) {
     const p = players[i];
-    let b64 = "";
-    if (fs.existsSync(images[i])) {
-        const buf = fs.readFileSync(images[i]);
-        b64 = "data:image/png;base64," + buf.toString('base64');
-    }
-    sql += `INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64, latest_plan) VALUES (${p.id}, 1, '${p.first}', '${p.last}', '${p.first[0]}${p.last[0]}', '${p.group}', '${b64}', NULL);\n`;
+    const url = `/assets/player${i+1}.png`;
+    sql += `INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64, latest_plan) VALUES (${p.id}, 1, '${p.first}', '${p.last}', '${p.first[0]}${p.last[0]}', '${p.group}', '${url}', NULL);\n`;
 }
 
 let current = new Date('2026-04-27T12:00:00'); // starting earlier in the week to ensure Monday
