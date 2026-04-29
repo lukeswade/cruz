@@ -10,11 +10,17 @@ export async function onRequestGet(context) {
         const player = await env.DB.prepare("SELECT * FROM players WHERE id = ?").bind(playerId).first();
         if(!player) return Response.json({error: "Not Found"}, {status: 404});
 
-        // Fetch session
+        // Fetch all session dates for this group
+        const { results: allSessions } = await env.DB.prepare(
+            "SELECT date FROM sessions WHERE group_name = ?"
+        ).bind(player.group_name).all();
+        const scheduledDates = allSessions.map(s => s.date);
+
+        // Fetch session for the specific date
         const session = await env.DB.prepare("SELECT * FROM sessions WHERE group_name = ? AND date = ?").bind(player.group_name, date).first();
 
         if(!session) {
-            return Response.json({player, session: null});
+            return Response.json({player, session: null, scheduled_dates: scheduledDates});
         }
 
         // Fetch roster and attendance
