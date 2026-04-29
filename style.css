@@ -1,25 +1,29 @@
 :root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
+    --bg-primary: #fcfcfd;
+    --bg-secondary: #f3f4f6;
     --accent: #B026FF;
     --accent-glow: rgba(176, 38, 255, 0.2);
-    --text-primary: #050505;
-    --text-secondary: #4a4a4a;
+    --text-primary: #0a0a0b;
+    --text-secondary: #52525b;
     --font-display: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(0, 0, 0, 0.1);
-    --glass-hover: rgba(0, 0, 0, 0.05);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-hover: rgba(0, 0, 0, 0.08);
+    --hero-overlay: linear-gradient(100deg, #fcfcfd 0%, rgba(252, 252, 253, 0.8) 50%, rgba(252, 252, 253, 0.1) 100%);
+    --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
 }
 
 .dark-theme {
     --bg-primary: #050505;
     --bg-secondary: #0a0a0a;
     --text-primary: #ffffff;
-    --text-secondary: #a3a3a3;
+    --text-secondary: #a1a1aa;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-hover: rgba(255, 255, 255, 0.12);
+    --hero-overlay: linear-gradient(100deg, #050505 0%, rgba(5, 5, 5, 0.7) 60%, rgba(5, 5, 5, 0.2) 100%);
+    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -143,14 +147,18 @@ body {
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
-    padding: 0.8rem 5%;
-    border-bottom: 1px solid var(--glass-border);
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    transition: background-color 0.3s, border-color 0.3s;
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow);
 }
 
 .nav-container {
@@ -295,7 +303,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(100deg, var(--bg-primary) 0%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.2) 100%);
+    background: var(--hero-overlay);
 }
 
 .hero-content {
@@ -422,11 +430,16 @@ body {
 }
 
 .program-card {
-    padding: 2.5rem;
-    border-radius: 12px;
-    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     position: relative;
     overflow: hidden;
+    height: 100%;
+    box-shadow: var(--card-shadow);
+    border-radius: 12px;
+    transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
 }
 
@@ -502,13 +515,14 @@ body {
 }
 
 .exos-banner {
+    margin-top: 4rem;
+    padding: 3rem;
+    border-radius: 24px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
-    padding: clamp(1.5rem, 5vw, 3rem);
-    border-radius: 12px;
+    box-shadow: var(--card-shadow);
     background: linear-gradient(90deg, var(--glass-bg), rgba(252, 163, 17, 0.05));
     border-left: 4px solid var(--accent);
 }
@@ -1131,12 +1145,12 @@ body {
     right: 0;
     width: 350px;
     height: 450px;
-    background: rgba(15, 15, 15, 0.95);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    box-shadow: var(--card-shadow);
     overflow: hidden;
     z-index: 10000;
     display: none;
