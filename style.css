@@ -41,6 +41,7 @@ body.dark-theme {
 
 .section-padding {
     padding: 100px 5%;
+    scroll-margin-top: 80px;
 }
 
 .section-title {
@@ -747,13 +748,14 @@ body.dark-theme {
     display: flex;
     justify-content: center;
     gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .footer-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 3rem;
+    padding: 3rem 5%;
     border-top: 1px solid var(--glass-border);
 }
 
@@ -819,13 +821,16 @@ body.dark-theme {
     border-color: var(--accent);
 }
 
-.media-card iframe {
+.media-card iframe,
+.media-card video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border: none;
+    object-fit: cover;
+    background: #000;
 }
 
 /* Instagram Feed */

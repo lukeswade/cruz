@@ -12,5 +12,7 @@ cruz.db
 # OS specific files
 .DS_Store
 assets/cruz.MOV
-assets/cruz.MOV
 assets/lee.MOV
+
+# Generated
+seed.sql

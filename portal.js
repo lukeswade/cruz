@@ -242,7 +242,7 @@
                 const img = new Image();
                 img.onload = async function() {
                     const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('styled_2d') || canvas.getContext('2d');
+                    const ctx = canvas.getContext('2d');
                     
                     // Box Crop 150x150
                     const size = 150;
@@ -298,6 +298,7 @@
                 btn.innerHTML = 'Tap to Record Audio';
                 btn.style.background = 'var(--bg-primary)';
                 btn.style.color = 'var(--text-primary)';
+                btn.classList.remove('recording-active');
                 isRecording = false;
                 return;
             }
@@ -326,6 +327,7 @@
                 btn.innerHTML = '🛑 Stop Recording...';
                 btn.style.background = 'rgba(244,67,54,0.1)';
                 btn.style.color = '#f44336';
+                btn.classList.add('recording-active');
                 
             } catch (err) {
                 console.error("Microphone access denied", err);
@@ -377,7 +379,7 @@
         // ── Dashboard Data ──
         async function loadDashboard() {
             try {
-                const res = await fetch(`/api/dashboard/${currentPlayer.id}?date=${activeDate}`);
+                const res = await fetch(`/api/dashboard/${currentPlayer.id}?date=${activeDate}&_t=${Date.now()}`);
                 const data = await res.json();
                 currentSession = data.session;
                 scheduledDates = data.scheduled_dates || [];

@@ -1,4 +1,4 @@
-body { background-color: var(--bg-primary); margin: 0; }
+body { background-color: var(--bg-primary); margin: 0; -webkit-tap-highlight-color: transparent; }
         .app-container {
             max-width: 480px;
             margin: 0 auto;
@@ -26,6 +26,7 @@ body { background-color: var(--bg-primary); margin: 0; }
             position: sticky;
             top: 0;
             z-index: 100;
+            padding-top: max(1rem, env(safe-area-inset-top));
         }
         .app-title {
             display: flex;
@@ -117,7 +118,7 @@ body { background-color: var(--bg-primary); margin: 0; }
             box-shadow: 0 4px 20px var(--accent-glow);
         }
         .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 30px rgba(176, 38, 255, 0.5); }
-        .login-btn:active { transform: scale(0.98); }
+        .login-btn:active { transform: scale(0.97); box-shadow: 0 2px 10px var(--accent-glow); }
 
         /* Dashboard Screen */
         .dashboard-screen {
@@ -334,6 +335,9 @@ body { background-color: var(--bg-primary); margin: 0; }
         .status-indicator { width: 8px; height: 8px; border-radius: 50%; background: #4CAF50; margin-left: auto; flex-shrink: 0; }
         .status-out { background: #f44336; }
 
+        .roster-item { transition: background 0.15s ease; }
+        .roster-item:hover { background: rgba(255,255,255,0.02); }
+
 
         .empty-state {
             padding: 3rem 1rem;
@@ -365,3 +369,12 @@ body { background-color: var(--bg-primary); margin: 0; }
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Recording pulse */
+        @keyframes pulse-record {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244,67,54,0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(244,67,54,0); }
+        }
+        .recording-active {
+            animation: pulse-record 1.5s ease infinite;
+        }

@@ -20,10 +20,10 @@ INSERT INTO parents (id, email, password) VALUES (4, 'parent@email.com', 'passwo
 `;
 
 const players = [
-    { id: 1, first: 'Liam', last: 'Smith', group: 'Development' },
-    { id: 2, first: 'Mia', last: 'Johnson', group: 'Master Class' },
+    { id: 1, first: 'Colt', last: 'Smith', group: 'Development' },
+    { id: 2, first: 'Char', last: 'Johnson', group: 'Development' },
     { id: 3, first: 'Noah', last: 'Williams', group: 'Foundation' },
-    { id: 4, first: 'Sophia', last: 'Brown', group: 'Development' },
+    { id: 4, first: 'Sophia', last: 'Brown', group: 'Master Class' },
 ];
 
 for(let i=0; i<4; i++) {
@@ -47,7 +47,7 @@ while(current <= end) {
         const dateStr = current.toISOString().split('T')[0];
         
         for (const g of groups) {
-            const timeStr = g === 'Foundation' ? '4:00 PM' : g === 'Development' ? '5:30 PM' : '7:00 PM';
+            const timeStr = '6:00 PM';
             sql += `INSERT INTO sessions (id, group_name, date, time_str) VALUES (${session_id}, '${g}', '${dateStr}', '${timeStr}');\n`;
             
             for (const p of players) {

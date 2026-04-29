@@ -5,9 +5,7 @@ export async function onRequestPost(context) {
         const body = await request.json();
         const { email, password } = body;
 
-
-
-        // Standard D1 lookup
+        // D1 lookup
         const parent = await env.DB.prepare("SELECT * FROM parents WHERE email = ? AND password = ?").bind(email, password).first();
         
         if (parent) {

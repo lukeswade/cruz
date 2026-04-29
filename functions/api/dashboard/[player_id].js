@@ -3,7 +3,7 @@ export async function onRequestGet(context) {
     const { request, env, params } = context;
     const playerId = parseInt(params.player_id);
     const url = new URL(request.url);
-    const date = url.searchParams.get('date') || '2026-04-20';
+    const date = url.searchParams.get('date') || new Date().toISOString().split('T')[0];
 
     try {
         // Fetch player

@@ -1,9 +1,11 @@
-const CACHE_NAME = 'cruz-portal-v22';
+const CACHE_NAME = 'cruz-portal-v25';
 const STATIC_ASSETS = [
     '/',
     '/portal',
     '/style.css',
+    '/portal.css',
     '/script.js',
+    '/portal.js',
     '/assets/icon.png',
     '/assets/icon-192.png',
     '/assets/icon-512.png',
