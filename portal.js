@@ -10,6 +10,43 @@
         let activeDate = now.toISOString().split('T')[0];
         let activeMonth = now.getMonth();  // 0-indexed
         let activeYear = now.getFullYear();
+        let isRecording = false;
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunElements = document.querySelectorAll('.sun');
+        const moonElement = document.querySelector('.moon');
+
+        function setTheme(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-theme');
+                sunElements.forEach(el => el.style.display = 'block');
+                moonElement.style.display = 'none';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-theme');
+                sunElements.forEach(el => el.style.display = 'none');
+                moonElement.style.display = 'block';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Init theme from localStorage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark-theme');
+            setTheme(!isDark);
+        });
+
+        // Sync main site theme if needed
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'theme') {
+                setTheme(e.newValue === 'dark');
+            }
+        });
 
         // ── Date Utils ──
         function formatDateStr(y, m, d) {
@@ -287,7 +324,6 @@
 
         let mediaRecorder = null;
         let audioChunks = [];
-        let isRecording = false;
 
         async function toggleVoiceRecording() {
             const btn = document.getElementById('recordVoiceBtn');
