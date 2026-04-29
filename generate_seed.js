@@ -13,7 +13,10 @@ DELETE FROM sessions;
 DELETE FROM players;
 DELETE FROM parents;
 
-INSERT INTO parents (id, email, password) VALUES (1, 'parent@email.com', 'password');
+INSERT INTO parents (id, email, password) VALUES (1, 'luke@lukewade.net', 'lukewade');
+INSERT INTO parents (id, email, password) VALUES (2, 'cruz@lukewade.net', 'cruz');
+INSERT INTO parents (id, email, password) VALUES (3, 'lee@lukewade.net', 'lee');
+INSERT INTO parents (id, email, password) VALUES (4, 'parent@email.com', 'password');
 `;
 
 const players = [
@@ -26,7 +29,10 @@ const players = [
 for(let i=0; i<4; i++) {
     const p = players[i];
     const url = `/assets/player${i+1}.png`;
-    sql += `INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64, latest_plan) VALUES (${p.id}, 1, '${p.first}', '${p.last}', '${p.first[0]}${p.last[0]}', '${p.group}', '${url}', NULL);\n`;
+    let parent_id = 1; // Default to Luke
+    if (i === 2) parent_id = 2; // Noah to Cruz
+    if (i === 3) parent_id = 3; // Sophia to Lee
+    sql += `INSERT INTO players (id, parent_id, firstname, lastname, initials, group_name, photo_b64, latest_plan) VALUES (${p.id}, ${parent_id}, '${p.first}', '${p.last}', '${p.first[0]}${p.last[0]}', '${p.group}', '${url}', NULL);\n`;
 }
 
 let current = new Date('2026-04-27T12:00:00'); // starting earlier in the week to ensure Monday
