@@ -20,7 +20,7 @@ body { background-color: var(--bg-primary); margin: 0; -webkit-tap-highlight-col
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10,10,10,0.95);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             position: sticky;
