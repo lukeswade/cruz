@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add user message
             const userBox = document.createElement('div');
-            userBox.style = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; border-bottom-right-radius: 2px; align-self: flex-end; max-width: 85%; color: var(--text-primary);";
+            userBox.className = "user-message";
             userBox.textContent = text;
             chatMessages.appendChild(userBox);
             chatInput.value = '';
@@ -99,15 +99,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const data = await res.json();
                 
-                chatMessages.removeChild(loadBox);
+                if (loadBox.parentNode) chatMessages.removeChild(loadBox);
+                
                 const replyBox = document.createElement('div');
-                replyBox.style = "background: rgba(176,38,255,0.1); border: 1px solid rgba(176,38,255,0.2); padding: 10px; border-radius: 8px; border-bottom-left-radius: 2px; max-width: 85%; color: var(--text-primary);";
-                replyBox.textContent = data.reply || "Sorry, I'm having trouble thinking right now.";
+                replyBox.className = "ai-message";
+                replyBox.textContent = data.reply || "Sorry, I'm having trouble thinking right now. Please try again in a moment.";
                 chatMessages.appendChild(replyBox);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
             } catch (err) {
-                chatMessages.removeChild(loadBox);
+                if (loadBox.parentNode) chatMessages.removeChild(loadBox);
+                const errorBox = document.createElement('div');
+                errorBox.className = "ai-message";
+                errorBox.style.background = "rgba(255, 0, 0, 0.1)";
+                errorBox.textContent = "Connection error. Please check your network.";
+                chatMessages.appendChild(errorBox);
             }
         });
     }

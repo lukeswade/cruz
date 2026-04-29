@@ -17,8 +17,17 @@ Goal: Provide expert technical insights that demonstrate why Coach Cruz (pro bac
             { role: "user", content: message }
         ];
 
-        const response = await env.AI.run("@cf/meta/llama-3-8b-instruct", { messages });
+        const response = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", { 
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: message }
+            ]
+        });
         
+        if (!response || !response.response) {
+            throw new Error("Empty response from AI model");
+        }
+
         return Response.json({ success: true, reply: response.response });
     } catch (e) {
         return Response.json({ success: false, error: e.message }, { status: 500 });
