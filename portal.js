@@ -383,6 +383,26 @@
                 const data = await res.json();
                 currentSession = data.session;
                 scheduledDates = data.scheduled_dates || [];
+
+                // Sync player info from live DB (fixes stale localStorage names)
+                if (data.player) {
+                    const fresh = data.player;
+                    currentPlayer.firstname = fresh.firstname;
+                    currentPlayer.lastname = fresh.lastname;
+                    currentPlayer.initials = fresh.initials;
+                    currentPlayer.group_name = fresh.group_name;
+                    currentPlayer.photo_b64 = fresh.photo_b64;
+
+                    // Update the dropdown option text
+                    const opt = document.querySelector(`#groupSelect option[value="${currentPlayer.id}"]`);
+                    if (opt) opt.textContent = `${fresh.firstname} ${fresh.lastname} – ${fresh.group_name}`;
+
+                    // Update welcome text with the first player's live name
+                    document.getElementById('welcomeText').textContent = `Welcome, ${players[0].firstname}'s family`;
+
+                    updateAvatarUI();
+                    updateAttendanceText(data.my_attendance);
+                }
                 
                 // Rebuild grids with new scheduledDates
                 buildWeeklyGrid();
