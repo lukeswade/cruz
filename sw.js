@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cruz-portal-v26';
+const CACHE_NAME = 'cruz-portal-v27';
 const STATIC_ASSETS = [
     '/',
     '/portal',
