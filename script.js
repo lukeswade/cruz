@@ -103,7 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const replyBox = document.createElement('div');
                 replyBox.className = "ai-message";
-                replyBox.textContent = data.reply || "Sorry, I'm having trouble thinking right now. Please try again in a moment.";
+                
+                if (data.success && data.reply) {
+                    replyBox.textContent = data.reply;
+                } else {
+                    replyBox.style.background = "rgba(255, 0, 0, 0.1)";
+                    replyBox.textContent = data.error || "Shadow Coach is temporarily offline. Please try again soon.";
+                }
+                
                 chatMessages.appendChild(replyBox);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
