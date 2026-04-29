@@ -43,11 +43,7 @@ export async function onRequestGet(context) {
             }
         });
 
-        // Fetch all session dates for this group
-        const { results: allSessions } = await env.DB.prepare(
-            "SELECT date FROM sessions WHERE group_name = ?"
-        ).bind(player.group_name).all();
-        const scheduledDates = allSessions.map(s => s.date);
+
 
         return Response.json({
             success: true,
