@@ -74,7 +74,7 @@ body {
 }
 
 .section-padding {
-    padding: 100px 5%;
+    padding: clamp(60px, 10vw, 120px) 5%;
     scroll-margin-top: 80px;
 }
 
@@ -261,8 +261,9 @@ body {
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 800px;
-    margin-top: 5rem;
+    max-width: min(800px, 90%);
+    padding-left: 5%;
+    padding-top: 120px;
 }
 
 .badge {
@@ -279,17 +280,18 @@ body {
 
 .display-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 500;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
     line-height: 1.1;
     margin-bottom: 1.5rem;
+    letter-spacing: -2px;
 }
 
-.hero-subtext, .hero-subtitle {
-    font-size: 1.25rem;
+.hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
     color: var(--text-secondary);
     max-width: 600px;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 .hero-actions {
@@ -375,7 +377,8 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    margin-bottom: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .program-card {
@@ -460,9 +463,11 @@ body {
 
 .exos-banner {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding: 3rem;
+    gap: 2rem;
+    padding: clamp(1.5rem, 5vw, 3rem);
     border-radius: 12px;
     background: linear-gradient(90deg, var(--glass-bg), rgba(252, 163, 17, 0.05));
     border-left: 4px solid var(--accent);
@@ -482,8 +487,8 @@ body {
 /* International Section */
 .international-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(2rem, 8vw, 4rem);
     align-items: center;
 }
 
@@ -1014,10 +1019,10 @@ body {
         align-items: center;
     }
     .international-container, .results-grid, .team-grid {
-        grid-template-columns: 1fr;
+        /* auto-fit handles this naturally now */
     }
     .credibility-grid {
-        grid-template-columns: 1fr;
+        /* auto-fit handles this naturally now */
     }
     .exos-banner {
         flex-direction: column;
