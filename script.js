@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (chatToggle && chatPanel) {
         chatToggle.addEventListener('click', () => {
-            chatPanel.style.display = chatPanel.style.display === 'none' ? 'flex' : 'none';
+            chatPanel.classList.toggle('active');
         });
         chatClose.addEventListener('click', () => {
-            chatPanel.style.display = 'none';
+            chatPanel.classList.remove('active');
         });
 
         chatForm.addEventListener('submit', async (e) => {
