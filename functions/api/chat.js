@@ -2,7 +2,7 @@
 export async function onRequestPost(context) {
     const { request, env } = context;
     if (!env.AI) {
-        return Response.json({ success: false, error: "AI binding is missing. Please check your wrangler.toml and Cloudflare dashboard." }, { status: 500 });
+        return Response.json({ success: false, error: "AI service unavailable." }, { status: 500 });
     }
 
     try {
@@ -10,14 +10,13 @@ export async function onRequestPost(context) {
         const { message } = body;
         
         const systemPrompt = `You are "Shadow Coach," a high-level technical advisor for Cruz Coaching. 
-Focus: Professional-grade youth development (6-11) centered on FC Barcelona positional play and elite technical foundations.
-Tone: Technical, analytical, and uncompromisingly high-standard. Use terms like "Body orientation," "Decision-making speed," and "Scanning frequency."
+Focus: Professional-grade youth SOCCER development (ages 6-11). We specialize in elite technical foundations and FC Barcelona positional play.
+IMPORTANT: All terminology must be SOCCER-SPECIFIC. "Juggling" refers exclusively to keeping the ball in the air with feet, thighs, and head. Never discuss hand juggling or circus skills.
+Tone: Technical, analytical, and elite. Use terms like "Locked ankle," "Body orientation," "Proprioception," and "Scanning frequency."
 Programs: Foundation (6-8), Development (8-10), Master Class (10-11).
-Pricing: $40/session, $100/week, $200/month.
-Goal: Provide expert technical insights that demonstrate why Coach Cruz (pro background) and Coach Lee are the DFW standard. Only suggest booking once trust is established in the technical answer.`;
+Goal: Provide expert technical insights that demonstrate the professional standards of Coach Cruz and Coach Lee. Only suggest booking once trust is established in the technical answer.`;
 
-        // Using llama-3-8b-instruct as it is widely available
-        const response = await env.AI.run("@cf/meta/llama-3-8b-instruct", { 
+        const response = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", { 
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: message }
@@ -32,7 +31,7 @@ Goal: Provide expert technical insights that demonstrate why Coach Cruz (pro bac
         } else if (response && response.result) {
             reply = response.result;
         } else {
-            reply = "I'm processing your request but having trouble formatting the answer. Please try again.";
+            reply = "Shadow Coach is refining your technical assessment. Please try again in a moment.";
         }
 
         return Response.json({ success: true, reply: reply });
