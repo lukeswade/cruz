@@ -217,8 +217,8 @@
             players = playersList;
             currentUserEmail = email;
 
-            // Show Coach Box if email is Cruz, Lee, or Luke
-            const coachEmails = ['cruz@lukewade.net', 'lee@lukewade.net', 'luke@lukewade.net'];
+            // Show staff tools for authorized emails
+            const coachEmails = ['luke@lukewade.net'];
             if (coachEmails.includes(currentUserEmail)) {
                 document.getElementById('coach-tools-section').style.display = 'block';
             } else {
