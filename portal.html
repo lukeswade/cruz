@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="assets/icon-512.png?v=31">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Player Portal | Cruz Coaching</title>
+    <title>Summer Team Scheduler | Summer Parent Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Alex+Brush&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="portal.css">
@@ -26,8 +26,8 @@
         <div class="app-header">
             <a href="/" style="color: var(--text-primary); text-decoration: none; font-size: 1.1rem;">&larr;</a>
             <div class="app-title">
-                <span class="brand-cruz">Cruz</span>
-                <span class="brand-coaching">Coaching</span>
+                <span class="brand-cruz">Summer</span>
+                <span class="brand-coaching">Team</span>
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
@@ -52,10 +52,10 @@
         <!-- Login Screen -->
         <div class="login-screen" id="loginScreen">
             <div class="login-logo">
-                <span class="brand-cruz">Cruz</span>
-                <span class="brand-coaching">Coaching</span>
+                <span class="brand-cruz">Summer</span>
+                <span class="brand-coaching">Team</span>
             </div>
-            <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; margin-bottom: 0.3rem; text-align: center;">Parent Portal</h2>
+            <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; margin-bottom: 0.3rem; text-align: center;">Summer Parent Portal</h2>
             <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.9rem; text-align: center;">Manage schedule and attendance</p>
             
             <form onsubmit="event.preventDefault(); doLogin();">
@@ -149,7 +149,7 @@
 
                 <!-- Latest Coach Feedback -->
                 <div id="parent-feedback-section" style="display: none; margin-top: 1.5rem; background: var(--glass-bg); border: 1px solid var(--accent); border-radius: 12px; padding: 1.2rem;">
-                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Coach Action Plan</h4>
+                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Session Action Plan</h4>
                     <div id="ui-latest-plan" style="font-size: 0.85rem; color: var(--text-primary); white-space: pre-wrap; margin-top: 0.5rem; line-height: 1.5;"></div>
                 </div>
 
@@ -160,7 +160,7 @@
 
                 <!-- Coach Tools (Hidden by default) -->
                 <div id="coach-tools-section" style="display: none; margin-top: 2rem; background: rgba(176,38,255,0.05); border: 1px solid rgba(176,38,255,0.2); border-radius: 12px; padding: 1.2rem;">
-                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; display:flex; align-items:center;">AI Coach Feedback</h4>
+                    <h4 style="color: var(--accent); font-weight: 500; margin-bottom: 0.5rem; display:flex; align-items:center;">AI Session Notes</h4>
                     <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Record raw voice feedback to auto-generate a structured practice plan for this player.</p>
                     <button id="recordVoiceBtn" onclick="toggleVoiceRecording()" style="width: 100%; background: var(--bg-primary); border: 1px solid var(--accent); color: var(--text-primary); padding: 0.8rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 500; transition: all 0.2s;">
                         Tap to Record Audio
